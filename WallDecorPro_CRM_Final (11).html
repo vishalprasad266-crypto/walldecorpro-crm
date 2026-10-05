@@ -1,0 +1,1996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wall Decor Pro CRM</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: system-ui, sans-serif; background:#f0f2f8; color:#1a1a2e; }
+
+/* LOGIN */
+.login-wrap { min-height:100vh; display:flex; align-items:center; justify-content:center; background:#0B1425; }
+.login-box { background:#121d35; border:1px solid rgba(201,168,76,0.3); border-radius:16px; padding:36px; width:340px; }
+.login-logo { text-align:center; margin-bottom:24px; }
+.login-logo .ico { width:50px; height:50px; background:#C9A84C; border-radius:10px; display:inline-flex; align-items:center; justify-content:center; font-size:22px; font-weight:900; color:#0B1425; margin-bottom:8px; }
+.login-logo h2 { color:#fff; font-size:18px; }
+.login-logo p { color:rgba(255,255,255,0.4); font-size:11px; margin-top:2px; }
+.lf { margin-bottom:14px; }
+.lf label { display:block; font-size:11px; font-weight:700; color:#C9A84C; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:5px; }
+.lf select, .lf input { width:100%; padding:11px 13px; border-radius:8px; border:1px solid rgba(201,168,76,0.3); background:rgba(255,255,255,0.07); color:#fff; font-size:14px; font-family:inherit; }
+.lf input[type=password] { letter-spacing:4px; font-size:16px; }
+.login-err { color:#f87171; font-size:12px; text-align:center; margin-bottom:8px; display:none; }
+.login-btn { width:100%; padding:13px; background:#C9A84C; color:#0B1425; font-size:15px; font-weight:700; border:none; border-radius:8px; cursor:pointer; }
+.login-btn:hover { background:#e8c96d; }
+
+/* APP */
+.app { display:none; min-height:100vh; }
+.hdr { background:#0B1425; height:56px; display:flex; align-items:center; justify-content:space-between; padding:0 18px; position:sticky; top:0; z-index:100; }
+.hdr-left { display:flex; align-items:center; gap:10px; }
+.hdr-ico { width:32px; height:32px; background:#C9A84C; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:900; color:#0B1425; }
+.hdr-title { color:#fff; font-size:15px; font-weight:700; }
+.hdr-sub { color:rgba(255,255,255,0.4); font-size:10px; }
+.hdr-right { display:flex; align-items:center; gap:8px; }
+.ubadge { background:rgba(201,168,76,0.15); border:1px solid rgba(201,168,76,0.3); color:#C9A84C; padding:4px 10px; border-radius:20px; font-size:12px; font-weight:600; }
+.logout { background:transparent; border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.6); padding:4px 10px; border-radius:6px; cursor:pointer; font-size:12px; }
+
+.tabs { background:#fff; border-bottom:1px solid #e2e8f0; display:flex; padding:0 18px; overflow-x:auto; }
+.tab { padding:11px 16px; font-size:13px; font-weight:500; color:#6b7280; cursor:pointer; border-bottom:2px solid transparent; white-space:nowrap; }
+.tab.on { color:#0B1425; border-bottom-color:#C9A84C; font-weight:700; }
+
+.main { padding:14px 18px; max-width:1300px; margin:0 auto; }
+
+/* CARDS */
+.cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:10px; margin-bottom:14px; }
+.card { background:#fff; border-radius:10px; padding:14px; border:1px solid #e2e8f0; }
+.card .lbl { font-size:10px; font-weight:700; text-transform:uppercase; color:#6b7280; letter-spacing:0.4px; margin-bottom:5px; }
+.card .val { font-size:22px; font-weight:800; }
+.navy { color:#0B1425; } .gold { color:#C9A84C; } .green { color:#16a34a; } .red { color:#dc2626; } .blue { color:#2563eb; } .purple { color:#7c3aed; }
+
+/* ALERT */
+.alert { border-radius:10px; padding:14px 18px; margin-bottom:14px; display:flex; align-items:center; gap:12px; }
+.alert.danger { background:#7f1d1d; color:#fff; }
+.alert.ok { background:#14532d; color:#fff; }
+.alert-icon { font-size:24px; }
+.alert-cnt { font-size:22px; font-weight:800; margin-left:auto; background:#fff; width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.alert-cnt.red { color:#dc2626; }
+.alert-cnt.green { color:#16a34a; }
+
+/* SECTION */
+.sec { background:#fff; border-radius:10px; border:1px solid #e2e8f0; margin-bottom:14px; overflow:hidden; }
+.sec-hd { padding:12px 16px; border-bottom:1px solid #e2e8f0; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; background:#fafbff; }
+.sec-title { font-size:13px; font-weight:700; color:#0B1425; }
+.sbar { padding:10px 16px; border-bottom:1px solid #e2e8f0; display:flex; gap:8px; flex-wrap:wrap; }
+.sbar input, .sbar select { padding:7px 10px; border:1px solid #e2e8f0; border-radius:7px; font-size:13px; font-family:inherit; }
+.sbar input { flex:1; min-width:160px; }
+
+/* TABLE */
+.tw { overflow-x:auto; }
+table { width:100%; border-collapse:collapse; font-size:12px; }
+th { background:#0B1425; color:#fff; padding:9px 11px; text-align:left; font-size:11px; white-space:nowrap; }
+td { padding:8px 11px; border-bottom:1px solid #e2e8f0; white-space:nowrap; }
+tr:last-child td { border-bottom:none; }
+tr:hover td { background:#f8faff; }
+tr.fu-row td { background:#fffbeb; }
+tr.fu-row td:first-child { border-left:3px solid #d97706; }
+tr.click-row { cursor:pointer; }
+
+/* BADGES */
+.badge { display:inline-flex; padding:2px 8px; border-radius:20px; font-size:10px; font-weight:700; white-space:nowrap; }
+.bn { background:#dbeafe; color:#1d4ed8; }
+.bc { background:#fef3c7; color:#92400e; }
+.bv { background:#d1fae5; color:#065f46; }
+.bq { background:#ede9fe; color:#5b21b6; }
+.bw { background:#d1fae5; color:#16a34a; }
+.bl { background:#fee2e2; color:#dc2626; }
+.bf { background:#fff7ed; color:#d97706; }
+.bb2b { background:#ede9fe; color:#7c3aed; }
+.bb2c { background:#e0f2fe; color:#0891b2; }
+
+/* BUTTONS */
+.btn { padding:7px 14px; border-radius:7px; border:none; cursor:pointer; font-family:inherit; font-size:13px; font-weight:600; display:inline-flex; align-items:center; gap:5px; }
+.bg { background:#C9A84C; color:#0B1425; }
+.bg:hover { background:#e8c96d; }
+.bn2 { background:#0B1425; color:#fff; }
+.bo { background:transparent; border:1px solid #e2e8f0; color:#1a1a2e; }
+.bdel { background:#fee2e2; color:#dc2626; }
+.bsm { padding:4px 9px; font-size:11px; border-radius:5px; }
+
+/* FU LABELS */
+.fu-over { color:#dc2626; font-weight:700; }
+.fu-today { color:#dc2626; font-weight:700; }
+.fu-soon { color:#d97706; font-weight:600; }
+
+/* FORM */
+.fg { display:flex; flex-direction:column; gap:3px; }
+.fg label { font-size:10px; font-weight:700; color:#6b7280; text-transform:uppercase; letter-spacing:0.4px; }
+.fg label.req { color:#dc2626; }
+.fg input, .fg select, .fg textarea { padding:8px 10px; border:1.5px solid #e2e8f0; border-radius:7px; font-family:inherit; font-size:13px; color:#1a1a2e; background:#ffffff; }
+.fg input.req-f, .fg select.req-f { border:2px solid #fca5a5; background:#fff9f9; }
+.fg input.req-f.filled, .fg select.req-f.filled { border:1.5px solid #e2e8f0; background:#ffffff; }
+.fg input.req-f.filled + label, .fg input.req-f:valid { border-color:#e2e8f0; }
+.fg input:focus, .fg select:focus, .fg textarea:focus { outline:none; border-color:#C9A84C; background:#fff; }
+.fgrid { display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:10px; padding:14px; background:#fff; }
+.full { grid-column:1/-1; }
+
+/* PRODUCT CHECKLIST */
+.pchk-wrap { border:2px solid #fca5a5; border-radius:8px; padding:10px; background:#fafafa; display:flex; flex-wrap:wrap; gap:7px; min-height:46px; }
+.pchk-wrap.ok { border-color:#e2e8f0; }
+.pitem { padding:6px 13px; border-radius:20px; border:1.5px solid #e2e8f0; background:#fff; cursor:pointer; font-size:12px; font-weight:500; user-select:none; -webkit-user-select:none; transition:all 0.15s; }
+.pitem:hover { border-color:#0B1425; }
+.pitem.on { background:#0B1425; color:#fff; border-color:#0B1425; font-weight:700; }
+.perr { color:#dc2626; font-size:11px; display:none; }
+
+/* MODAL */
+.moverlay { position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:200; display:none; align-items:center; justify-content:center; padding:14px; }
+.moverlay.show { display:flex; }
+.modal { background:#fff; border-radius:14px; width:100%; max-width:680px; max-height:92vh; overflow-y:auto; }
+.mhd { padding:14px 16px; border-bottom:1px solid #e2e8f0; display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; background:#fff; z-index:10; }
+.mtitle { font-size:15px; font-weight:700; color:#0B1425; }
+.mft { padding:12px 16px; border-top:1px solid #e2e8f0; display:flex; gap:8px; justify-content:flex-end; }
+.xbtn { width:28px; height:28px; border:1px solid #e2e8f0; border-radius:6px; background:none; cursor:pointer; font-size:16px; color:#6b7280; }
+
+/* PROD SUMMARY */
+.pt { display:inline-flex; padding:2px 7px; border-radius:10px; background:#e8eaf6; color:#3949ab; font-size:10px; font-weight:600; margin:1px; }
+
+/* HIDDEN */
+.hide { display:none !important; }
+
+@media(max-width:600px) {
+  .cards { grid-template-columns:1fr 1fr; }
+  .fgrid { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="loginWrap">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="ico">W</div>
+      <h2>Wall Decor Pro</h2>
+      <p>CRM — Sales Management</p>
+    </div>
+    <div class="lf">
+      <label>Your Name</label>
+      <select id="lUser">
+        <option value="">— Select Name —</option>
+        <option value="Vishal|founder">👑 Vishal (Founder)</option>
+        <option value="Naresh|sales">Naresh</option>
+        <option value="Ayush|sales">Ayush</option>
+        <option value="Shubi|sales">Shubi</option>
+        <option value="Anil|accountant">📊 Anil (Accountant)</option>
+      </select>
+    </div>
+    <div class="lf">
+      <label>PIN</label>
+      <input type="password" id="lPin" placeholder="••••" maxlength="4" onkeydown="if(event.key==='Enter')login()">
+    </div>
+    <div class="login-err" id="lErr"></div>
+    <button class="login-btn" onclick="login()">Login →</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="app" id="appWrap">
+  <div class="hdr">
+    <div class="hdr-left">
+      <div class="hdr-ico">W</div>
+      <div>
+        <div class="hdr-title">Wall Decor Pro CRM</div>
+        <div class="hdr-sub" id="hSub">Sales Management</div>
+      </div>
+    </div>
+    <div class="hdr-right">
+      <div class="ubadge" id="uBadge"></div>
+      <div id="syncSt" style="font-size:11px;display:none;margin-right:4px"></div>
+      <button class="logout" onclick="exportCSV()" style="background:#C9A84C;color:#0B1425;border:none;font-weight:700">⬇️ Export</button>
+      <button class="logout" onclick="logout()">Logout</button>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab on" onclick="showTab('dash',this)">📊 Dashboard</div>
+    <div class="tab" onclick="showTab('b2c',this)">🏠 B2C</div>
+    <div class="tab" onclick="showTab('b2b',this)">🤝 B2B</div>
+    <div class="tab" onclick="showTab('fu',this)">🔔 Follow-ups</div>
+    <div class="tab" onclick="showTab('mysales',this)">💰 My Sales</div>
+    <div class="tab" id="ordTab" onclick="showTab('orders',this)">📦 Orders</div>
+    <div class="tab hide" id="rTab" onclick="showTab('rep',this)">📈 Reports</div>
+    <div class="tab hide" id="tTab" onclick="showTab('team',this)">👥 Team</div>
+  </div>
+
+  <div class="main">
+
+    <!-- DASHBOARD -->
+    <div id="tab-dash">
+      <div class="alert" id="todayAlert">
+        <div class="alert-icon">🔔</div>
+        <div><div style="font-weight:700;font-size:14px">Follow-ups Due Today</div><div id="alertSub" style="font-size:12px;opacity:.8"></div></div>
+        <div class="alert-cnt" id="alertCnt">0</div>
+      </div>
+      <div class="cards" id="sumCards"></div>
+      <div class="sec">
+        <div class="sec-hd">
+          <div class="sec-title">📋 Recent Leads</div>
+          <button class="btn bg bsm" id="addLeadBtn" onclick="openAdd()">+ Add Lead</button>
+        </div>
+        <div class="tw"><table><thead><tr><th>#</th><th>Date</th><th>Client</th><th>Segment</th><th>Products</th><th>Assigned</th><th>Status</th><th>Follow-up</th><th>Actions</th></tr></thead><tbody id="dashTb"></tbody></table></div>
+      </div>
+    </div>
+
+    <!-- B2C -->
+    <div id="tab-b2c" class="hide">
+      <div class="sec">
+        <div class="sec-hd">
+          <div class="sec-title" style="color:#0891b2">🏠 B2C — Direct Homeowners</div>
+          <button class="btn bg bsm" onclick="openAdd('B2C')">+ Add B2C Lead</button>
+        </div>
+        <div class="sbar">
+          <input placeholder="Search client, area..." oninput="renderB2C()" id="b2cQ">
+          <select onchange="renderB2C()" id="b2cSt"><option value="">All Status</option><option>New</option><option>Called</option><option>Site Visit Scheduled</option><option>Visited</option><option>Quoted</option><option>Won</option><option>Lost</option></select>
+        </div>
+        <div class="tw"><table><thead><tr><th>#</th><th>Date</th><th>Client</th><th>Contact</th><th>Area</th><th>Products</th><th>Assigned</th><th>Status</th><th>Follow-up</th><th>Actions</th></tr></thead><tbody id="b2cTb"></tbody></table></div>
+      </div>
+    </div>
+
+    <!-- B2B -->
+    <div id="tab-b2b" class="hide">
+      <div class="sec">
+        <div class="sec-hd">
+          <div class="sec-title" style="color:#7c3aed">🤝 B2B — Trade Partners (Long Term)</div>
+          <button class="btn bg bsm" onclick="openAdd('B2B')">+ Add B2B Lead</button>
+        </div>
+        <div class="sbar">
+          <input placeholder="Search company..." oninput="renderB2B()" id="b2bQ">
+          <select onchange="renderB2B()" id="b2bTp"><option value="">All Types</option><option>Interior Designer</option><option>Architect</option><option>Hardware Shop</option><option>Contractor</option><option>Reseller</option></select>
+          <select onchange="renderB2B()" id="b2bSt"><option value="">All Status</option><option>New</option><option>Called</option><option>Meeting Done</option><option>Sample Sent</option><option>Active Partner</option><option>Not Interested</option></select>
+        </div>
+        <div class="tw"><table><thead><tr><th>#</th><th>Date</th><th>Company</th><th>Contact</th><th>Type</th><th>Area</th><th>Assigned</th><th>Status</th><th>Follow-up</th><th>Actions</th></tr></thead><tbody id="b2bTb"></tbody></table></div>
+      </div>
+    </div>
+
+    <!-- FOLLOW-UPS -->
+    <div id="tab-fu" class="hide">
+      <div class="cards">
+        <div class="card"><div class="lbl">Due Today</div><div class="val red" id="fuT">0</div></div>
+        <div class="card"><div class="lbl">Overdue</div><div class="val red" id="fuO">0</div></div>
+        <div class="card"><div class="lbl">This Week</div><div class="val gold" id="fuW">0</div></div>
+        <div class="card"><div class="lbl">Upcoming</div><div class="val green" id="fuU">0</div></div>
+      </div>
+      <div class="sec">
+        <div class="sec-hd"><div class="sec-title">🔔 All Follow-ups — Priority Order</div></div>
+        <div class="tw"><table><thead><tr><th>Priority</th><th>Date</th><th>Client</th><th>Segment</th><th>Contact</th><th>Assigned</th><th>Status</th><th>Actions</th></tr></thead><tbody id="fuTb"></tbody></table></div>
+      </div>
+    </div>
+
+    <!-- REPORTS -->
+    <div id="tab-rep" class="hide">
+      <div class="cards" id="repCards"></div>
+      <div class="sec">
+        <div class="sec-hd"><div class="sec-title">📊 Team Performance</div></div>
+        <div class="tw"><table><thead><tr><th>Person</th><th>Total</th><th>B2B</th><th>B2C</th><th>Won</th><th>Lost</th><th>Active</th><th>Follow-ups Today</th></tr></thead><tbody id="repTb"></tbody></table></div>
+      </div>
+      <div class="sec" style="margin-top:0">
+        <div class="sec-hd"><div class="sec-title">📋 All Leads</div></div>
+        <div class="tw"><table><thead><tr><th>#</th><th>Date</th><th>Client</th><th>Segment</th><th>Assigned</th><th>Status</th><th>Follow-up</th><th>Actions</th></tr></thead><tbody id="allTb"></tbody></table></div>
+      </div>
+    </div>
+
+    <!-- MY SALES -->
+    <div id="tab-mysales" class="hide">
+      <div class="sec">
+        <div class="sec-hd">
+          <div class="sec-title">💰 Sales Summary</div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <select id="salesPeriod" onchange="renderMySales()" style="padding:6px 10px;border:1px solid #e2e8f0;border-radius:7px;font-size:13px;font-family:inherit">
+              <option value="thismonth">This Month</option>
+              <option value="lastmonth">Last Month</option>
+              <option value="3months">Last 3 Months</option>
+              <option value="6months">Last 6 Months</option>
+              <option value="all">All Time</option>
+            </select>
+            <select id="salesPerson" onchange="renderMySales()" style="padding:6px 10px;border:1px solid #e2e8f0;border-radius:7px;font-size:13px;font-family:inherit">
+              <option value="">My Sales</option>
+            </select>
+          </div>
+        </div>
+        <div class="cards" id="salesCards" style="padding:14px"></div>
+      </div>
+      <div class="sec">
+        <div class="sec-hd"><div class="sec-title">📋 Won Deals in Period</div></div>
+        <div class="tw"><table><thead><tr><th>#</th><th>Date</th><th>Client</th><th>Salesperson</th><th>Sale Amt</th><th>Transport ➖</th><th>Install ➖</th><th>Disc+Loss ➖</th><th>Net Sales ✅</th><th>Advance</th><th>Balance</th></tr></thead><tbody id="salesTb"></tbody></table></div>
+      </div>
+    </div>
+
+    <!-- ORDERS -->
+    <div id="tab-orders" class="hide">
+      <div class="sec">
+        <div class="sec-hd">
+          <div class="sec-title">📦 Sales Orders</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <select id="ordFilter" onchange="renderOrders()" style="padding:6px 10px;border:1px solid #e2e8f0;border-radius:7px;font-size:13px;font-family:inherit">
+              <option value="all">All Orders</option>
+              <option value="today">Today</option>
+              <option value="thisweek">This Week</option>
+              <option value="thismonth">This Month</option>
+            </select>
+            <select id="ordPerson" onchange="renderOrders()" style="padding:6px 10px;border:1px solid #e2e8f0;border-radius:7px;font-size:13px;font-family:inherit">
+              <option value="">All Salesperson</option>
+            </select>
+            <select id="ordPayStatus" onchange="renderOrders()" style="padding:6px 10px;border:1px solid #e2e8f0;border-radius:7px;font-size:13px;font-family:inherit">
+              <option value="">All Payment Status</option>
+              <option value="Fully Paid">Fully Paid</option>
+              <option value="Partially Paid">Partially Paid</option>
+              <option value="Balance Due">Balance Due</option>
+            </select>
+            <button class="btn bg bsm" onclick="exportOrders()">⬇ Export CSV</button>
+          </div>
+        </div>
+        <div class="cards" id="ordCards" style="padding:14px"></div>
+        <div class="tw">
+          <table>
+            <thead><tr><th>Order ID</th><th>Date</th><th>Customer</th><th>Type</th><th>Products</th><th>Salesperson</th><th>Net Sales</th><th>Total Bill</th><th>Advance</th><th>Balance</th><th>Pay Status</th><th>Order Status</th><th>Actions</th></tr></thead>
+            <tbody id="ordTb"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TEAM -->
+    <div id="tab-team" class="hide">
+      <div class="sec">
+        <div class="sec-hd">
+          <div class="sec-title">👥 Sales Team</div>
+          <button class="btn bg bsm" onclick="openAddMember()">+ Add Member</button>
+        </div>
+        <div class="tw"><table><thead><tr><th>#</th><th>Name</th><th>Role</th><th>Leads</th><th>Actions</th></tr></thead><tbody id="teamTb"></tbody></table></div>
+      </div>
+      <div class="sec">
+        <div class="sec-hd"><div class="sec-title">📦 Products</div></div>
+        <div style="padding:14px">
+          <div id="prodManage" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px"></div>
+          <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap">
+            <div class="fg"><label>New Product Name</label><input type="text" id="newProd" placeholder="e.g. Timber Panels"></div>
+            <button class="btn bn2" onclick="addProd()">Add Product</button>
+          </div>
+        </div>
+      </div>
+      <div class="sec">
+        <div class="sec-hd"><div class="sec-title">🔑 Change Founder PIN</div></div>
+        <div style="padding:14px;display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap">
+          <div class="fg"><label>New PIN (4 digits)</label><input type="password" id="newFPin" maxlength="4" placeholder="••••"></div>
+          <button class="btn bn2" onclick="changeFounderPin()">Update PIN</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- VIEW LEAD POPUP -->
+<div class="moverlay" id="viewPop">
+  <div class="modal" style="max-width:500px">
+    <div class="mhd">
+      <div class="mtitle" id="viewTitle">Lead Details</div>
+      <button class="xbtn" onclick="closePop('viewPop')">×</button>
+    </div>
+    <div id="viewBody" style="padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px"></div>
+    <div class="mft">
+      <button class="btn bo" onclick="closePop('viewPop')">Close</button>
+      <button class="btn" id="viewActBtn" style="background:#6366f1;color:#fff">📝 Notes</button>
+      <button class="btn" id="viewPayBtn" style="background:#16a34a;color:#fff;display:none">💰 Payment</button>
+      <button class="btn bg" id="viewEditBtn">Edit Lead</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD/EDIT LEAD -->
+<div class="moverlay" id="addPop">
+  <div class="modal">
+    <div class="mhd">
+      <div class="mtitle" id="addTitle">Add Lead</div>
+      <button class="xbtn" onclick="closePop('addPop')">×</button>
+    </div>
+    <div class="fgrid">
+      <div class="fg"><label>Segment</label><select id="fSeg" onchange="toggleB2B()"><option value="B2C">B2C — Direct Customer</option><option value="B2B">B2B — Trade Partner</option></select></div>
+      <div class="fg"><label class="req">Date *</label><input type="date" id="fDate" class="req-f"></div>
+      <div class="fg"><label class="req">Client Name *</label><input type="text" id="fClient" placeholder="Name" class="req-f"></div>
+      <div class="fg"><label class="req">Contact Number *</label><input type="text" id="fContact" placeholder="Phone" class="req-f"></div>
+      <div class="fg hide" id="b2bTF"><label>B2B Type</label><select id="fB2BT"><option>Interior Designer</option><option>Architect</option><option>Hardware Shop</option><option>Contractor</option><option>Reseller</option></select></div>
+      <div class="fg"><label>Area / Location</label><input type="text" id="fArea" placeholder="e.g. Whitefield"></div>
+      <div class="fg"><label>Lead Source</label><select id="fSrc"><option>Google Ads</option><option>Instagram</option><option>WhatsApp</option><option>Referral</option><option>Facebook</option><option>Walk-in</option><option>Other</option></select></div>
+      <div class="fg" id="assignF"><label>Assign To</label><select id="fAssign"></select></div>
+      <div class="fg"><label class="req">Status *</label><select id="fStatus" class="req-f"></select></div>
+      <div class="fg"><label class="req">Follow-up Date *</label><input type="date" id="fFU" class="req-f"></div>
+      <div class="fg"><label>Budget (Rs.)</label><input type="number" id="fBudget" placeholder="Approx"></div>
+      <div class="fg full">
+        <label class="req">Products * <span style="font-weight:400;color:#6b7280;text-transform:none;letter-spacing:0">(tap to select multiple)</span></label>
+        <div class="pchk-wrap" id="pchk"></div>
+        <div class="perr" id="pErr">Please select at least one product</div>
+        <div style="display:flex;gap:8px;margin-top:8px;align-items:center">
+          <input type="text" id="newInlineProd" placeholder="+ Type new product name..." style="flex:1;padding:6px 10px;border:1px dashed #C9A84C;border-radius:7px;font-size:12px;font-family:inherit">
+          <button type="button" class="btn bg bsm" onclick="addNewProdInline()">Add & Select</button>
+        </div>
+      </div>
+      <div class="fg full"><label>Notes</label><textarea id="fNotes" rows="2" placeholder="Any notes..."></textarea></div>
+    </div>
+    <div class="mft">
+      <button class="btn bo" onclick="closePop('addPop')">Cancel</button>
+      <button class="btn bg" onclick="saveLead()">💾 Save Lead</button>
+    </div>
+  </div>
+</div>
+
+<!-- REMOVE PRODUCT POPUP -->
+<div class="moverlay" id="removeProdPop">
+  <div class="modal" style="max-width:340px">
+    <div class="mhd"><div class="mtitle" style="color:#dc2626">Remove Product?</div><button class="xbtn" onclick="closePop('removeProdPop')">×</button></div>
+    <div style="padding:16px">
+      <p style="font-size:14px;color:#374151;margin-bottom:6px">Do you want to remove:</p>
+      <p style="font-size:15px;font-weight:700;color:#0B1425" id="removeProdName"></p>
+    </div>
+    <div class="mft">
+      <button class="btn bo" onclick="closePop('removeProdPop')">No, Keep It</button>
+      <button class="btn" style="background:#dc2626;color:#fff" onclick="doRemoveProd()">Yes, Remove</button>
+    </div>
+  </div>
+</div>
+
+<!-- ACTIVITY LOG POPUP -->
+<div class="moverlay" id="actPop">
+  <div class="modal" style="max-width:500px">
+    <div class="mhd">
+      <div class="mtitle">📝 Activity Log — <span id="actClientName" style="color:#C9A84C"></span></div>
+      <button class="xbtn" onclick="closePop('actPop')">×</button>
+    </div>
+    <div style="padding:14px 18px;max-height:350px;overflow-y:auto">
+      <div id="actLogList"></div>
+    </div>
+    <div style="padding:14px 18px;border-top:1px solid #e2e8f0">
+      <div style="font-size:11px;font-weight:700;color:#0B1425;margin-bottom:6px">Add Today's Note <span style="color:#6b7280;font-weight:400">(date added automatically)</span></div>
+      <textarea id="actNote" rows="2" placeholder="What happened today? Call note, visit update, discussion..." style="width:100%;padding:8px;border:1px solid #e2e8f0;border-radius:7px;font-family:inherit;font-size:13px;margin-bottom:8px"></textarea>
+      <button class="btn bg" style="width:100%" onclick="addActivityNote()">💾 Save Note</button>
+    </div>
+  </div>
+</div>
+
+<!-- DELETE POPUP -->
+<div class="moverlay" id="delPop">
+  <div class="modal" style="max-width:360px">
+    <div class="mhd"><div class="mtitle" style="color:#dc2626">⚠️ Delete Lead</div><button class="xbtn" onclick="closePop('delPop')">×</button></div>
+    <div style="padding:18px">
+      <p style="font-size:14px;color:#374151;margin-bottom:6px">Are you sure you want to delete?</p>
+      <p style="font-size:14px;font-weight:700" id="delName"></p>
+      <p style="font-size:12px;color:#dc2626;margin-top:6px">This cannot be undone.</p>
+    </div>
+    <div class="mft">
+      <button class="btn bo" onclick="closePop('delPop')">Cancel</button>
+      <button class="btn" style="background:#dc2626;color:#fff" onclick="doDelete()">Yes, Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- MEMBER POPUP -->
+<div class="moverlay" id="memPop">
+  <div class="modal" style="max-width:360px">
+    <div class="mhd"><div class="mtitle" id="memTitle">Add Member</div><button class="xbtn" onclick="closePop('memPop')">×</button></div>
+    <div class="fgrid" style="grid-template-columns:1fr">
+      <div class="fg"><label>Name *</label><input type="text" id="mName" placeholder="Full name"></div>
+      <div class="fg"><label>PIN (4 digits) *</label><input type="password" id="mPin" placeholder="••••" maxlength="4"></div>
+    </div>
+    <div class="mft">
+      <button class="btn bo" onclick="closePop('memPop')">Cancel</button>
+      <button class="btn bg" onclick="saveMember()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- SALES ORDER POPUP -->
+<div class="moverlay" id="orderPop">
+  <div class="modal" style="max-width:720px">
+    <div class="mhd">
+      <div>
+        <div class="mtitle">📦 Sales Order — <span id="orderId" style="color:#C9A84C;font-size:13px"></span></div>
+        <div style="font-size:11px;color:#6b7280" id="orderClient2"></div>
+      </div>
+      <button class="xbtn" onclick="closePop('orderPop')">×</button>
+    </div>
+    <!-- ORDER STATUS BAR -->
+    <div style="padding:10px 16px;background:#f8faff;border-bottom:1px solid #e2e8f0;overflow-x:auto">
+      <div style="display:flex;gap:4px;white-space:nowrap" id="statusBar"></div>
+    </div>
+    <div style="padding:14px 16px;overflow-y:auto;max-height:70vh">
+      <!-- CUSTOMER INFO -->
+      <div style="background:#f0f9ff;border-radius:8px;padding:12px;margin-bottom:12px;border:1px solid #bae6fd">
+        <div style="font-size:11px;font-weight:700;color:#0369a1;margin-bottom:8px">CUSTOMER DETAILS</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+          <div class="fg"><label>Customer Name</label><input type="text" id="ordCustName" placeholder="Name"></div>
+          <div class="fg"><label>Phone</label><input type="text" id="ordPhone" placeholder="Phone"></div>
+          <div class="fg"><label>Type</label><select id="ordType"><option>B2C</option><option>B2B</option></select></div>
+          <div class="fg"><label>Salesperson</label><input type="text" id="ordSalesperson" readonly style="background:#f0f0f0"></div>
+          <div class="fg"><label>Date of Sale</label><input type="date" id="ordDate"></div>
+          <div class="fg"><label>Area</label><input type="text" id="ordArea" placeholder="e.g. Whitefield"></div>
+        </div>
+      </div>
+      <!-- PRODUCTS -->
+      <div style="margin-bottom:12px">
+        <div style="font-size:11px;font-weight:700;color:#0B1425;text-transform:uppercase;margin-bottom:8px">📦 Products</div>
+        <div class="tw" style="border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;margin-bottom:8px">
+          <table>
+            <thead><tr><th>Product</th><th>Qty</th><th>Unit</th><th>Rate (Rs.)</th><th>Disc (Rs.)</th><th>Total</th><th></th></tr></thead>
+            <tbody id="ordProdTb"></tbody>
+          </table>
+        </div>
+        <button class="btn bo bsm" onclick="addOrdProd()">+ Add Product Line</button>
+      </div>
+      <!-- EXTRA CHARGES / DEDUCTIONS -->
+      <div style="background:#f8faff;border:1px solid #e2e8f0;border-radius:8px;padding:12px;margin-bottom:10px">
+        <div style="font-size:11px;font-weight:700;color:#0B1425;text-transform:uppercase;margin-bottom:8px">➕ Extra Charges / ➖ Deductions</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px">
+          <div class="fg">
+            <label style="color:#dc2626">🚚 Transport (Rs.) <span style="font-weight:400;color:#6b7280">(deducted)</span></label>
+            <input type="number" id="ordTransport" placeholder="0" value="0" oninput="calcOrdTotal()" style="border:1px solid #fca5a5;background:#fff9f9">
+          </div>
+          <div class="fg">
+            <label style="color:#dc2626">🔧 Installation (Rs.) <span style="font-weight:400;color:#6b7280">(deducted)</span></label>
+            <input type="number" id="ordInstall" placeholder="0" value="0" oninput="calcOrdTotal()" style="border:1px solid #fca5a5;background:#fff9f9">
+          </div>
+          <div class="fg">
+            <label style="color:#dc2626">🏷️ Extra Discount (Rs.) <span style="font-weight:400;color:#6b7280">(deducted)</span></label>
+            <input type="number" id="ordExtraDisc" placeholder="0" value="0" oninput="calcOrdTotal()" style="border:1px solid #fca5a5;background:#fff9f9">
+          </div>
+          <div class="fg">
+            <label style="color:#dc2626">❌ Loss (Rs.) <span style="font-weight:400;color:#6b7280">(deducted)</span></label>
+            <input type="number" id="ordLoss" placeholder="0" value="0" oninput="calcOrdTotal()" style="border:1px solid #fca5a5;background:#fff9f9">
+          </div>
+        </div>
+      </div>
+      <!-- TOTALS -->
+      <div style="background:#0B1425;border-radius:8px;padding:14px;margin-bottom:12px">
+        <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:8px">
+          <div><div style="font-size:9px;color:rgba(255,255,255,0.4);text-transform:uppercase;margin-bottom:3px">Subtotal</div><div style="font-size:13px;font-weight:700;color:#fff" id="ordSubtotal">Rs. 0</div></div>
+          <div><div style="font-size:9px;color:rgba(255,255,255,0.4);text-transform:uppercase;margin-bottom:3px">Prod Disc ➖</div><div style="font-size:13px;font-weight:700;color:#f87171" id="ordDiscount">Rs. 0</div></div>
+          <div><div style="font-size:9px;color:rgba(255,255,255,0.4);text-transform:uppercase;margin-bottom:3px">Transport ➖</div><div style="font-size:13px;font-weight:700;color:#f87171" id="ordTransportTot">Rs. 0</div></div>
+          <div><div style="font-size:9px;color:rgba(255,255,255,0.4);text-transform:uppercase;margin-bottom:3px">Install ➖</div><div style="font-size:13px;font-weight:700;color:#f87171" id="ordInstallTot">Rs. 0</div></div>
+          <div><div style="font-size:9px;color:rgba(255,255,255,0.4);text-transform:uppercase;margin-bottom:3px">Disc+Loss ➖</div><div style="font-size:13px;font-weight:700;color:#f87171" id="ordExtraTot">Rs. 0</div></div>
+          <div><div style="font-size:9px;color:rgba(255,255,255,0.4);text-transform:uppercase;margin-bottom:3px">Net Total</div><div style="font-size:15px;font-weight:800;color:#C9A84C" id="ordGrandTotal">Rs. 0</div></div>
+          <div><div style="font-size:9px;color:rgba(255,255,255,0.4);text-transform:uppercase;margin-bottom:3px">Balance Due</div><div style="font-size:15px;font-weight:800;color:#f87171" id="ordBalance">Rs. 0</div></div>
+        </div>
+      </div>
+      <!-- PAYMENTS -->
+      <div style="margin-bottom:12px">
+        <div style="font-size:11px;font-weight:700;color:#0B1425;text-transform:uppercase;margin-bottom:8px">💵 Payment Entries</div>
+        <div class="tw" style="border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;margin-bottom:8px">
+          <table>
+            <thead><tr><th>Date</th><th>Amount</th><th>Mode</th><th>Reference</th><th>Screenshot</th><th></th></tr></thead>
+            <tbody id="ordPayTb"><tr><td colspan="6" style="text-align:center;padding:12px;color:#6b7280">No payments yet</td></tr></tbody>
+          </table>
+        </div>
+        <div style="background:#f8faff;padding:12px;border-radius:8px;border:1px solid #e2e8f0">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px">
+            <div class="fg"><label>Amount (Rs.) *</label><input type="number" id="pmtAmt" placeholder="0"></div>
+            <div class="fg"><label>Mode</label><select id="pmtMode"><option>Cash</option><option>UPI</option><option>Bank Transfer</option><option>Card</option><option>Other</option></select></div>
+            <div class="fg"><label>Type</label><select id="pmtType"><option value="payment">💵 Payment Received</option><option value="refund">↩️ Refund Given</option></select></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+            <div class="fg"><label>Date</label><input type="date" id="pmtDate"></div>
+            <div class="fg"><label>Reference / UTR <span style="font-weight:400;color:#6b7280">(optional)</span></label><input type="text" id="pmtRef" placeholder="Optional..."></div>
+          </div>
+          <div class="fg" style="margin-bottom:8px">
+            <label>Payment Screenshot <span style="font-weight:400;color:#6b7280">(optional)</span></label>
+            <input type="file" id="pmtImg" accept="image/*" style="padding:5px;font-size:12px">
+          </div>
+          <button class="btn bg" style="width:100%" onclick="addOrdPayment()">+ Add Payment Entry</button>
+        </div>
+      </div>
+      <!-- DISPATCH STATUS — controlled by clickable status bar above -->
+      <select id="ordDispStatus" style="display:none">
+        <option>Order Confirmed</option>
+        <option>Payment Cleared</option>
+        <option>Order Completed</option>
+      </select>
+    </div>
+    <div class="mft">
+      <button class="btn bo" onclick="closePop('orderPop')">Close</button>
+      <button class="btn bg" onclick="saveOrder()">💾 Save Order</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAYMENT POPUP — LEDGER BASED -->
+<div class="moverlay" id="payPop">
+  <div class="modal" style="max-width:640px">
+    <div class="mhd">
+      <div class="mtitle">💰 Payment Ledger — <span id="payClient" style="color:#C9A84C"></span></div>
+      <button class="xbtn" onclick="closePop('payPop')">×</button>
+    </div>
+    <!-- TOTALS BAR -->
+    <div style="background:#0B1425;padding:14px 18px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+      <div><div style="font-size:9px;color:rgba(255,255,255,0.4);text-transform:uppercase;margin-bottom:3px">Net Sales</div><div style="font-size:16px;font-weight:700;color:#60a5fa" id="ptNetSale">Rs. 0</div></div>
+      <div><div style="font-size:9px;color:rgba(255,255,255,0.4);text-transform:uppercase;margin-bottom:3px">Total Bill</div><div style="font-size:16px;font-weight:700;color:#fff" id="ptTotal">Rs. 0</div></div>
+      <div><div style="font-size:9px;color:rgba(255,255,255,0.4);text-transform:uppercase;margin-bottom:3px">Advance Paid</div><div style="font-size:16px;font-weight:700;color:#C9A84C" id="ptAdv">Rs. 0</div></div>
+      <div><div style="font-size:9px;color:rgba(255,255,255,0.4);text-transform:uppercase;margin-bottom:3px">Balance Due</div><div style="font-size:18px;font-weight:800;color:#f87171" id="ptBal">Rs. 0</div></div>
+    </div>
+    <!-- LEDGER TABLE -->
+    <div style="padding:14px 18px">
+      <div style="font-size:11px;font-weight:700;color:#0B1425;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px">📋 Payment Entries</div>
+      <div class="tw" style="border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;margin-bottom:12px">
+        <table>
+          <thead><tr><th>Date</th><th>Type</th><th>Description</th><th>Amount</th><th></th></tr></thead>
+          <tbody id="ledgerTb"><tr><td colspan="5" style="text-align:center;padding:16px;color:#6b7280">No entries yet. Add below.</td></tr></tbody>
+        </table>
+      </div>
+      <!-- ADD NEW ENTRY -->
+      <div style="background:#f8faff;border:1px solid #e2e8f0;border-radius:8px;padding:12px">
+        <div style="font-size:11px;font-weight:700;color:#0B1425;margin-bottom:8px">➕ Add New Entry</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 2fr 1fr;gap:8px;align-items:flex-end">
+          <div class="fg"><label>Date</label><input type="date" id="entDate"></div>
+          <div class="fg"><label>Type</label>
+            <select id="entType" onchange="updateEntryColor()">
+              <option value="sale">💼 Sale</option>
+              <option value="install">🔧 Installation</option>
+              <option value="transport">🚚 Transport</option>
+              <option value="advance">💵 Advance Received</option>
+              <option value="discount">🏷️ Discount</option>
+              <option value="loss">❌ Loss</option>
+              <option value="other">📝 Other</option>
+            </select>
+          </div>
+          <div class="fg"><label>Description</label><input type="text" id="entDesc" placeholder="e.g. WPC Panels added, Advance 1..."></div>
+          <div class="fg"><label>Amount (Rs.)</label><input type="number" id="entAmt" placeholder="0"></div>
+        </div>
+        <button class="btn bg" style="margin-top:10px;width:100%" onclick="addLedgerEntry()">Add Entry</button>
+      </div>
+    </div>
+    <div class="mft">
+      <button class="btn bo" onclick="skipPay()">Close</button>
+      <button class="btn bg" onclick="savePay()">💾 Save All</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var leads = JSON.parse(localStorage.getItem('wdp_leads') || '[]');
+var team = JSON.parse(localStorage.getItem('wdp_team') || 'null') || {
+  members: [{name:'Naresh',pin:'1234'},{name:'Ayush',pin:'1234'},{name:'Shubi',pin:'1234'}],
+  founderPin: '1234',
+  accountantPin: '1234'
+};
+if (!team.accountantPin) team.accountantPin = '1234';
+var orders = JSON.parse(localStorage.getItem('wdp_orders') || '[]');
+function savO() { localStorage.setItem('wdp_orders', JSON.stringify(orders)); }
+var prods = JSON.parse(localStorage.getItem('wdp_prods') || 'null') || [
+  'WPC Panels','3D PVC Panels','Charcoal Panels','UV Marble Sheets',
+  'Wallpaper','Wooden Flooring','Soffit Panels','PU Stone',
+  '7 Horses 3D Mural','Beadings','PVC Panels','Louvers'
+];
+var curUser = '', curRole = '';
+
+// Session restore handled in initApp below
+var editId = null, delId = null, editMemIdx = null;
+
+// ===== GOOGLE SHEETS SYNC =====
+// IMPORTANT: After setting up Apps Script, paste your Web App URL below
+var GS_URL = 'https://script.google.com/macros/s/AKfycbxehnVJLlfcZ8JtFHk9dpEZOjwcKRzNZKucFfEOKCxu2cjpEsypAKPKK1rpDkRaSjjC/exec';
+// Hosted at: https://vishalprasad266-crypto.github.io/walldecorpro-crm/WallDecorPro_CRM_Final.html
+
+function syncToSheets() {
+  if (!GS_URL) return;
+  setSyncStatus('syncing');
+  var payload = JSON.stringify({action:'saveAll', leads:leads, orders:orders, team:team, prods:prods});
+  // Use no-cors mode — works from local file, data goes through even without response
+  fetch(GS_URL, {method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain'}, body:payload})
+  .then(function(){ setSyncStatus('ok'); })
+  .catch(function(){ setSyncStatus('error'); });
+}
+
+function syncTeamToSheets() { syncToSheets(); }
+
+function autoExportDaily() {
+  var today = new Date().toISOString().slice(0,10);
+  var lastExport = localStorage.getItem('wdp_last_export') || '';
+  if (lastExport === today) return; // Already exported today
+  localStorage.setItem('wdp_last_export', today);
+  setTimeout(function(){ exportCSV(); }, 3000); // Wait 3 seconds after login then export
+}
+
+function exportCSV() {
+  var today = new Date().toISOString().slice(0,10);
+  var headers = ['ID','Segment','Date','Client','Contact','Area','Products','Source','B2B Type','Assigned To','Status','Follow-up Date','Budget','Notes'];
+
+  function makeCSV(rowData) {
+    return rowData.map(function(r){ return r.map(function(c){ return '"'+(String(c||'').replace(/"/g,'""'))+'"'; }).join(','); }).join('\n');
+  }
+  function downloadCSV(csv, filename) {
+    var blob = new Blob([csv], {type:'text/csv'});
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    a.click();
+  }
+  function leadsToRows(arr) {
+    var rows = [headers];
+    arr.forEach(function(l) {
+      rows.push([
+        l.id||'', l.segment||'', fmtDate(l.date)||'', l.client||'', l.contact||'',
+        l.area||'', Array.isArray(l.product)?l.product.join(', '):(l.product||''),
+        l.source||'', l.b2bType||'', l.assignedTo||'', l.status||'',
+        fmtDate(l.followupDate)||'', l.budget||'', l.notes||''
+      ]);
+    });
+    return rows;
+  }
+
+  // 1. All Leads together
+  setTimeout(function(){ downloadCSV(makeCSV(leadsToRows(leads)), 'ALL_Leads_'+today+'.csv'); }, 0);
+
+  // 2. Separate file per salesperson
+  var salespeople = {};
+  leads.forEach(function(l) {
+    var name = l.assignedTo || 'Unassigned';
+    if (!salespeople[name]) salespeople[name] = [];
+    salespeople[name].push(l);
+  });
+  var delay = 600;
+  Object.keys(salespeople).forEach(function(name) {
+    (function(n, d){
+      setTimeout(function(){
+        downloadCSV(makeCSV(leadsToRows(salespeople[n])), n+'_Leads_'+today+'.csv');
+      }, d);
+    })(name, delay);
+    delay += 600;
+  });
+
+  // 3. Orders file
+  if (orders.length) {
+    var oh = ['Order ID','Date','Customer','Phone','Type','Salesperson','Area','Grand Total','Discount','Advance','Balance','Pay Status','Dispatch Status'];
+    var orows = [oh];
+    orders.forEach(function(o) {
+      orows.push([o.id||'', fmtDate(o.date)||'', o.custName||'', o.phone||'', o.custType||'',
+        o.salesperson||'', o.area||'', o.grandTotal||0, o.discount||0,
+        o.advTotal||0, o.balance||0, o.payStatus||'', o.dispStatus||'']);
+    });
+    setTimeout(function(){ downloadCSV(makeCSV(orows), 'ALL_Orders_'+today+'.csv'); }, delay);
+  }
+}
+
+function loadFromSheets(cb) {
+  // localStorage is ALWAYS the source of truth — never overwrite existing local data
+  var localLeads = JSON.parse(localStorage.getItem('wdp_leads') || '[]');
+  var localOrders = JSON.parse(localStorage.getItem('wdp_orders') || '[]');
+  if (localLeads.length) leads = localLeads;
+  if (localOrders.length) orders = localOrders;
+  // If local data exists — use it immediately, no network call needed
+  if (localLeads.length || localOrders.length) {
+    if (cb) cb();
+    return;
+  }
+  // Only fetch from sheets if local storage is completely empty
+  if (!GS_URL) { if(cb) cb(); return; }
+  fetch(GS_URL+'?action=getAll')
+  .then(function(r){ return r.json(); })
+  .then(function(d){
+    if (d.leads && d.leads.length) {
+      leads = d.leads.map(function(r){
+        return {id:r.id,segment:r.segment,date:r.date,client:r.client,contact:r.contact,
+          area:r.area,product:r.product?r.product.split(', '):[],source:r.source,
+          b2bType:r.b2bType,assignedTo:r.assignedTo,status:r.status,
+          followupDate:r.followupDate,budget:r.budget,notes:r.notes};
+      });
+      localStorage.setItem('wdp_leads',JSON.stringify(leads));
+    }
+    if (cb) cb();
+  }).catch(function(){ if(cb) cb(); });
+}
+
+function setSyncStatus(st) {
+  var el = document.getElementById('syncSt');
+  if (!el) return;
+  if (st==='syncing') { el.textContent='☁️ Syncing...'; el.style.color='#C9A84C'; el.style.display='block'; }
+  else if (st==='ok') { el.textContent='☁️ Saved to Sheets'; el.style.color='#4ade80'; el.style.display='block'; setTimeout(function(){ el.style.display='none'; },3000); }
+  else { el.textContent='⚠️ Offline'; el.style.color='#f87171'; el.style.display='block'; setTimeout(function(){ el.style.display='none'; },3000); }
+}
+
+function sav() {
+  localStorage.setItem('wdp_leads', JSON.stringify(leads));
+  syncToSheets();
+}
+function savT() { localStorage.setItem('wdp_team', JSON.stringify(team)); syncTeamToSheets(); }
+function savP() { localStorage.setItem('wdp_prods', JSON.stringify(prods)); }
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,5); }
+function tod() {
+  var d = new Date();
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+// Always convert any date string to YYYY-MM-DD for HTML date inputs
+function toInputDate(d) {
+  if (!d) return tod();
+  d = String(d).trim();
+  // Has time component — strip it: "2026-10-04T18:30:00.000Z" → "2026-10-04"
+  if (d.indexOf('T') > -1) d = d.split('T')[0];
+  // Already YYYY-MM-DD
+  if (/^\d{4}-\d{2}-\d{2}$/.test(d)) return d;
+  // DD-MM-YYYY format → YYYY-MM-DD
+  if (/^\d{2}-\d{2}-\d{4}$/.test(d)) {
+    var p = d.split('-'); return p[2]+'-'+p[1]+'-'+p[0];
+  }
+  // DD/MM/YYYY format → YYYY-MM-DD
+  if (/^\d{2}\/\d{2}\/\d{4}$/.test(d)) {
+    var p = d.split('/'); return p[2]+'-'+p[1]+'-'+p[0];
+  }
+  // Try JS Date parsing as last resort
+  try {
+    var dt = new Date(d);
+    if (!isNaN(dt.getTime())) {
+      return dt.getFullYear()+'-'+String(dt.getMonth()+1).padStart(2,'0')+'-'+String(dt.getDate()).padStart(2,'0');
+    }
+  } catch(e){}
+  return tod();
+}
+
+// ===== LOGIN =====
+function login() {
+  var sel = document.getElementById('lUser').value;
+  var pin = document.getElementById('lPin').value.trim();
+  var err = document.getElementById('lErr');
+  err.style.display = 'none';
+  if (!sel) { err.textContent = '❌ Please select your name'; err.style.display = 'block'; return; }
+  if (!pin) { err.textContent = '❌ Please enter your PIN'; err.style.display = 'block'; return; }
+  var parts = sel.split('|');
+  var name = parts[0], role = parts[1];
+  var freshTeam = JSON.parse(localStorage.getItem('wdp_team') || 'null') || team;
+  if (!freshTeam.founderPin) freshTeam.founderPin = '1234';
+  if (!freshTeam.accountantPin) freshTeam.accountantPin = '1234';
+  var correct = '';
+  if (role === 'founder') correct = String(freshTeam.founderPin);
+  else if (role === 'accountant') correct = String(freshTeam.accountantPin);
+  else { var mem = freshTeam.members.find(function(m){return m.name===name;}); correct = mem ? String(mem.pin||'1234') : '1234'; }
+  team = freshTeam;
+  if (String(pin) !== correct) {
+    err.textContent = '❌ Wrong PIN. Try again.';
+    err.style.display = 'block';
+    document.getElementById('lPin').value = '';
+    return;
+  }
+  curUser = name; curRole = role;
+  sessionStorage.setItem('wdp_user', name);
+  sessionStorage.setItem('wdp_role', role);
+  document.getElementById('loginWrap').style.display = 'none';
+  document.getElementById('appWrap').style.display = 'block';
+  document.getElementById('uBadge').textContent = name + (role==='founder'?' 👑':role==='accountant'?' 📊':'');
+  document.getElementById('hSub').textContent = role==='founder' ? 'Founder — Full access' : role==='accountant' ? 'Accountant — View Only' : 'Sales Team';
+  // Always reset Add Lead button first
+  var ab = document.getElementById('addLeadBtn');
+  if (ab) ab.style.display = '';
+  if (role === 'founder') {
+    document.getElementById('rTab').classList.remove('hide');
+    document.getElementById('tTab').classList.remove('hide');
+  }
+  if (role === 'accountant') {
+    document.getElementById('rTab').classList.remove('hide');
+    if (ab) ab.style.display = 'none';
+  }
+  populateAssign();
+  loadFromSheets(function(){ renderAll(); autoExportDaily(); });
+}
+
+function logout() {
+  curUser = ''; curRole = '';
+  sessionStorage.removeItem('wdp_user');
+  sessionStorage.removeItem('wdp_role');
+  document.getElementById('loginWrap').style.display = '';
+  document.getElementById('appWrap').style.display = 'none';
+  document.getElementById('lPin').value = '';
+  document.getElementById('lErr').style.display = 'none';
+  document.getElementById('rTab').classList.add('hide');
+  document.getElementById('tTab').classList.add('hide');
+  refreshLoginDrop();
+}
+
+function refreshLoginDrop() {
+  var sel = document.getElementById('lUser');
+  sel.innerHTML = '<option value="">— Select Name —</option>' +
+    '<option value="Vishal|founder">👑 Vishal (Founder)</option>' +
+    team.members.map(function(m){ return '<option value="'+m.name+'|sales">'+m.name+'</option>'; }).join('') +
+    '<option value="Anil|accountant">📊 Anil (Accountant)</option>';
+}
+
+// ===== TABS =====
+function showTab(t, el) {
+  document.querySelectorAll('[id^="tab-"]').forEach(function(e){ e.classList.add('hide'); });
+  document.getElementById('tab-'+t).classList.remove('hide');
+  document.querySelectorAll('.tab').forEach(function(e){ e.classList.remove('on'); });
+  if (el) el.classList.add('on');
+  renderAll();
+}
+
+// ===== HELPERS =====
+function myLeads() {
+  return (curRole === 'founder' || curRole === 'accountant') ? leads : leads.filter(function(l){ return l.assignedTo === curUser; });
+}
+
+function pSum(p) {
+  var a = Array.isArray(p) ? p : (p ? [p] : []);
+  if (!a.length) return '—';
+  if (a.length === 1) return '<span class="pt">'+a[0]+'</span>';
+  return '<span class="pt">'+a[0]+'</span> <span style="color:#6b7280;font-size:11px">+'+( a.length-1)+' more</span>';
+}
+
+function pAll(p) {
+  var a = Array.isArray(p) ? p : (p ? [p] : []);
+  return a.length ? a.map(function(x){ return '<span class="pt" style="font-size:11px;padding:3px 10px">'+x+'</span>'; }).join(' ') : '—';
+}
+
+function pText(p) {
+  var a = Array.isArray(p) ? p : (p ? [p] : []);
+  return a.join(', ') || '—';
+}
+
+function sbadge(s) {
+  var map = {New:'bn',Called:'bc','Site Visit Scheduled':'bf',Visited:'bv',Quoted:'bq',Won:'bw',Lost:'bl','Meeting Done':'bv','Sample Sent':'bq','Active Partner':'bw','Not Interested':'bl'};
+  return '<span class="badge '+(map[s]||'bn')+'">'+s+'</span>';
+}
+
+function fmtDate(d) {
+  if (!d) return '—';
+  // Handle both YYYY-MM-DD and DD/MM/YYYY and DD-MM-YYYY
+  var parts = d.toString().split('-');
+  if (parts.length === 3) {
+    // If first part is 4 digits it's YYYY-MM-DD, convert to DD-MM-YYYY
+    if (parts[0].length === 4) return parts[2]+'-'+parts[1]+'-'+parts[0];
+    // Already DD-MM-YYYY
+    return d;
+  }
+  // Handle slash format
+  parts = d.toString().split('/');
+  if (parts.length === 3) {
+    if (parts[2].length === 4) return parts[0]+'-'+parts[1]+'-'+parts[2];
+  }
+  return d;
+}
+
+function fuLbl(d) {
+  if (!d) return '<span style="color:#ccc">—</span>';
+  var t = tod();
+  if (d < t) return '<span class="fu-over">⚠️ Overdue</span>';
+  if (d === t) return '<span class="fu-today">🔴 TODAY</span>';
+  var diff = Math.ceil((new Date(d)-new Date(t))/(86400000));
+  if (diff <= 3) return '<span class="fu-soon">🟡 '+fmtDate(d)+'</span>';
+  return '<span style="color:#6b7280">'+fmtDate(d)+'</span>';
+}
+
+function isActive(l) { return !['Won','Lost','Not Interested'].includes(l.status); }
+
+function sortL(arr) {
+  var t = tod();
+  return arr.slice().sort(function(a,b){
+    // Priority 1: Today's follow-ups (active only)
+    var at = (a.followupDate===t) && isActive(a);
+    var bt = (b.followupDate===t) && isActive(b);
+    if (at && !bt) return -1;
+    if (!at && bt) return 1;
+    // Priority 2: Overdue (active only)
+    var ao = a.followupDate && a.followupDate < t && isActive(a);
+    var bo = b.followupDate && b.followupDate < t && isActive(b);
+    if (ao && !bo) return -1;
+    if (!ao && bo) return 1;
+    // Priority 3: Upcoming follow-ups soonest first
+    if (a.followupDate && b.followupDate) return a.followupDate.localeCompare(b.followupDate);
+    if (a.followupDate) return -1;
+    if (b.followupDate) return 1;
+    // Default: newest lead first
+    return new Date(b.date) - new Date(a.date);
+  });
+}
+
+function fuRow(l) { return l.followupDate===tod()&&isActive(l) ? 'fu-row' : ''; }
+
+function aBtns(id) {
+  if (isReadOnly()) return '';
+  return '<button class="btn bn2 bsm" onclick="editLead(\''+id+'\')">Edit</button> '+
+    '<button class="btn bsm" style="background:#fee2e2;color:#dc2626;margin-left:3px" onclick="askDel(\''+id+'\')">Delete</button>';
+}
+
+function populateAssign() {
+  var el = document.getElementById('fAssign');
+  if (!el) return;
+  if (curRole === 'founder') {
+    document.getElementById('assignF').classList.remove('hide');
+    el.innerHTML = team.members.map(function(m){ return '<option>'+m.name+'</option>'; }).join('');
+  } else {
+    document.getElementById('assignF').classList.add('hide');
+  }
+  // Populate salesPerson filter in My Sales
+  var sp = document.getElementById('salesPerson');
+  if (sp) {
+    if (curRole === 'founder') {
+      sp.innerHTML = '<option value="">All Team</option>' + team.members.map(function(m){ return '<option value="'+m.name+'">'+m.name+'</option>'; }).join('');
+      sp.style.display = '';
+    } else {
+      sp.innerHTML = '<option value="'+curUser+'">My Sales</option>';
+      sp.style.display = 'none';
+    }
+  }
+}
+
+function renderMySales() {
+  var periodEl = document.getElementById('salesPeriod');
+  var spEl = document.getElementById('salesPerson');
+  if (!periodEl) return;
+  var period = periodEl.value;
+  var spFilter = spEl ? spEl.value : '';
+  var person = (curRole === 'founder' || curRole === 'accountant') ? (spFilter || null) : curUser;
+  var now = new Date();
+  var fromDate = null;
+  if (period === 'thismonth') { fromDate = new Date(now.getFullYear(), now.getMonth(), 1); }
+  else if (period === 'lastmonth') { fromDate = new Date(now.getFullYear(), now.getMonth()-1, 1); }
+  else if (period === '3months') { fromDate = new Date(now.getFullYear(), now.getMonth()-2, 1); }
+  else if (period === '6months') { fromDate = new Date(now.getFullYear(), now.getMonth()-5, 1); }
+  var fmt = function(n){ return 'Rs. '+(n||0).toLocaleString('en-IN'); };
+  var rows = [];
+  // Source 1: Sales Orders — pull ALL fields correctly
+  orders.forEach(function(o){
+    if (person && o.salesperson !== person) return;
+    if (fromDate && o.date) { var d=new Date(o.date); if(d<fromDate) return; }
+    var subtotal = o.subtotal || o.grandTotal || 0;
+    var prodDisc = o.discount || 0;
+    var transport = o.transport || 0;
+    var install = o.install || 0;
+    var extraDisc = o.extraDisc || 0;
+    var loss = o.loss || 0;
+    var adv = o.advTotal || 0;
+    var bal = o.balance || 0;
+    var totalDeductions = prodDisc + transport + install + extraDisc + loss;
+    var netSale = subtotal - totalDeductions;
+    rows.push({ id:o.id, leadId:o.leadId, date:o.date, client:o.custName, salesperson:o.salesperson,
+      saleAmt:subtotal, transport:transport, inst:install, disc:prodDisc+extraDisc, loss:loss,
+      netSale:netSale, adv:adv, bal:bal, src:'Order' });
+  });
+  // Source 2: Won leads with old payment data (no sales order)
+  leads.forEach(function(l){
+    if (l.status !== 'Won') return;
+    if (person && l.assignedTo !== person) return;
+    if (fromDate && l.date) { var d=new Date(l.date); if(d<fromDate) return; }
+    var hasOrder = orders.find(function(o){ return o.leadId===l.id; });
+    if (hasOrder) return;
+    var p = l.payment || {};
+    var saleAmt = p.saleAmount||p.total||0;
+    rows.push({ id:null, leadId:l.id, date:l.date, client:l.client, salesperson:l.assignedTo,
+      saleAmt:saleAmt, transport:p.transport||0, inst:p.installAmount||0, disc:p.discount||0,
+      loss:p.loss||0, netSale:p.netSale||saleAmt, adv:p.advTotal||0, bal:p.balance||0, src:'Lead' });
+  });
+  var totSale=0,totTransport=0,totInst=0,totDisc=0,totLoss=0,totAdv=0,totNet=0,totBal=0;
+  rows.forEach(function(r){
+    totSale+=r.saleAmt; totTransport+=(r.transport||0); totInst+=r.inst;
+    totDisc+=r.disc; totLoss+=r.loss; totAdv+=r.adv; totNet+=r.netSale; totBal+=r.bal;
+  });
+  document.getElementById('salesCards').innerHTML =
+    '<div class="card"><div class="lbl">Won Deals</div><div class="val navy">'+rows.length+'</div></div>'+
+    '<div class="card"><div class="lbl">Total Sale Amt</div><div class="val blue">'+fmt(totSale)+'</div></div>'+
+    '<div class="card"><div class="lbl">Transport ➖</div><div class="val red">'+fmt(totTransport)+'</div></div>'+
+    '<div class="card"><div class="lbl">Installation ➖</div><div class="val red">'+fmt(totInst)+'</div></div>'+
+    '<div class="card"><div class="lbl">Discount+Loss ➖</div><div class="val red">'+fmt(totDisc+totLoss)+'</div></div>'+
+    '<div class="card" style="border:2px solid #16a34a"><div class="lbl">Net Sales (Incentive Base)</div><div class="val green">'+fmt(totNet)+'</div></div>'+
+    '<div class="card"><div class="lbl">Advance Received</div><div class="val green">'+fmt(totAdv)+'</div></div>'+
+    '<div class="card"><div class="lbl">Balance Due</div><div class="val red">'+fmt(totBal)+'</div></div>';
+  document.getElementById('salesTb').innerHTML = rows.length ? rows.map(function(r,i){
+    var clickFn = r.src==='Order' && r.id ? "openOrder('"+r.id+"')" : "viewLead('"+r.leadId+"')";
+    return '<tr class="click-row" onclick="'+clickFn+'" style="cursor:pointer">'+
+      '<td>'+(i+1)+'</td>'+
+      '<td>'+fmtDate(r.date)+'</td>'+
+      '<td><strong>'+r.client+'</strong></td>'+
+      '<td>'+r.salesperson+'</td>'+
+      '<td style="color:#16a34a;font-weight:700">'+fmt(r.saleAmt)+'</td>'+
+      '<td style="color:#dc2626">'+fmt(r.transport||0)+'</td>'+
+      '<td style="color:#dc2626">'+fmt(r.inst)+'</td>'+
+      '<td style="color:#dc2626">'+fmt(r.disc+r.loss)+'</td>'+
+      '<td style="font-weight:700;color:#16a34a;border:2px solid #16a34a;border-radius:4px;padding:4px 8px">'+fmt(r.netSale)+'</td>'+
+      '<td style="color:#C9A84C">'+fmt(r.adv)+'</td>'+
+      '<td style="color:#f87171">'+fmt(r.bal)+'</td>'+
+      '</tr>';
+  }).join('') : '<tr><td colspan="11" style="text-align:center;padding:20px;color:#6b7280">No won deals in this period.</td></tr>';
+}
+
+// ===== RENDER ALL =====
+function renderAll() {
+  renderSum();
+  renderDash();
+  renderB2C();
+  renderB2B();
+  renderFU();
+  renderMySales();
+  renderOrders();
+  if (curRole === 'founder') { renderRep(); renderTeam(); renderProdManage(); }
+}
+
+var dashFilter = null;
+
+function renderSum() {
+  var ml = myLeads(), t = tod();
+  var tfu = ml.filter(function(l){ return l.followupDate===t&&isActive(l); }).length;
+  var cnt = document.getElementById('alertCnt');
+  cnt.textContent = tfu;
+  cnt.className = 'alert-cnt '+(tfu>0?'red':'green');
+  document.getElementById('alertSub').textContent = tfu>0 ? tfu+' client(s) to call today!' : 'No follow-ups today. Great work!';
+  document.getElementById('todayAlert').className = 'alert '+(tfu>0?'danger':'ok');
+  var cards = [
+    {l:'Total Leads', v:ml.length, c:'navy', f:null},
+    {l:'B2C', v:ml.filter(function(l){return l.segment==='B2C';}).length, c:'blue', f:'b2c'},
+    {l:'B2B Partners', v:ml.filter(function(l){return l.segment==='B2B';}).length, c:'purple', f:'b2b'},
+    {l:'Follow-ups Today', v:tfu, c:tfu>0?'red':'green', f:'today'},
+    {l:'Won', v:ml.filter(function(l){return l.status==='Won';}).length, c:'green', f:'won'},
+    {l:'Lost', v:ml.filter(function(l){return l.status==='Lost'||l.status==='Not Interested';}).length, c:'red', f:'lost'},
+    {l:'Active', v:ml.filter(function(l){return isActive(l);}).length, c:'gold', f:'active'},
+  ];
+  document.getElementById('sumCards').innerHTML = cards.map(function(c){
+    var active = dashFilter===c.f ? 'box-shadow:0 0 0 2px #C9A84C;' : '';
+    return '<div class="card" style="cursor:pointer;'+active+'" onclick="setDashFilter(\''+c.f+'\')"><div class="lbl">'+c.l+'</div><div class="val '+c.c+'">'+c.v+'</div></div>';
+  }).join('');
+}
+
+function setDashFilter(f) {
+  dashFilter = (dashFilter === f) ? null : f;
+  renderSum();
+  renderDash();
+}
+
+function renderDash() {
+  var t = tod();
+  var ml = sortL(myLeads());
+  if (dashFilter === 'b2c') ml = ml.filter(function(l){ return l.segment==='B2C'; });
+  else if (dashFilter === 'b2b') ml = ml.filter(function(l){ return l.segment==='B2B'; });
+  else if (dashFilter === 'today') ml = ml.filter(function(l){ return l.followupDate===t&&isActive(l); });
+  else if (dashFilter === 'won') ml = ml.filter(function(l){ return l.status==='Won'; });
+  else if (dashFilter === 'lost') ml = ml.filter(function(l){ return l.status==='Lost'||l.status==='Not Interested'; });
+  else if (dashFilter === 'active') ml = ml.filter(function(l){ return isActive(l); });
+  ml = ml.slice(0,30);
+  document.getElementById('dashTb').innerHTML = ml.length ? ml.map(function(l,i){
+    return '<tr class="click-row '+fuRow(l)+'" onclick="viewLead(\''+l.id+'\')"><td>'+(i+1)+'</td><td>'+fmtDate(l.date)+'</td><td><strong>'+l.client+'</strong></td><td><span class="badge b'+(l.segment||'b2c').toLowerCase()+'">'+l.segment+'</span></td><td>'+pSum(l.product)+'</td><td>'+l.assignedTo+'</td><td>'+sbadge(l.status)+'</td><td>'+fuLbl(l.followupDate)+'</td><td onclick="event.stopPropagation()">'+aBtns(l.id)+'</td></tr>';
+  }).join('') : '<tr><td colspan="9" style="text-align:center;padding:24px;color:#6b7280">No leads found.</td></tr>';
+}
+
+function renderB2C() {
+  var q = (document.getElementById('b2cQ').value||'').toLowerCase();
+  var st = document.getElementById('b2cSt').value;
+  var data = myLeads().filter(function(l){ return l.segment==='B2C'; });
+  if (q) data = data.filter(function(l){ return l.client.toLowerCase().includes(q)||(l.area||'').toLowerCase().includes(q)||pText(l.product).toLowerCase().includes(q); });
+  if (st) data = data.filter(function(l){ return l.status===st; });
+  data = sortL(data);
+  document.getElementById('b2cTb').innerHTML = data.length ? data.map(function(l,i){
+    return '<tr class="click-row '+fuRow(l)+'" onclick="viewLead(\''+l.id+'\')"><td>'+(i+1)+'</td><td>'+fmtDate(l.date)+'</td><td><strong>'+l.client+'</strong></td><td>'+(l.contact||'—')+'</td><td>'+(l.area||'—')+'</td><td>'+pSum(l.product)+'</td><td>'+l.assignedTo+'</td><td>'+sbadge(l.status)+'</td><td>'+fuLbl(l.followupDate)+'</td><td onclick="event.stopPropagation()">'+aBtns(l.id)+'</td></tr>';
+  }).join('') : '<tr><td colspan="10" style="text-align:center;padding:24px;color:#6b7280">No B2C leads.</td></tr>';
+}
+
+function renderB2B() {
+  var q = (document.getElementById('b2bQ').value||'').toLowerCase();
+  var tp = document.getElementById('b2bTp').value;
+  var st = document.getElementById('b2bSt').value;
+  var data = myLeads().filter(function(l){ return l.segment==='B2B'; });
+  if (q) data = data.filter(function(l){ return l.client.toLowerCase().includes(q)||(l.b2bType||'').toLowerCase().includes(q); });
+  if (tp) data = data.filter(function(l){ return l.b2bType===tp; });
+  if (st) data = data.filter(function(l){ return l.status===st; });
+  data = sortL(data);
+  document.getElementById('b2bTb').innerHTML = data.length ? data.map(function(l,i){
+    return '<tr class="click-row '+fuRow(l)+'" onclick="viewLead(\''+l.id+'\')"><td>'+(i+1)+'</td><td>'+fmtDate(l.date)+'</td><td><strong>'+l.client+'</strong></td><td>'+(l.contact||'—')+'</td><td><span class="badge bb2b">'+(l.b2bType||'—')+'</span></td><td>'+(l.area||'—')+'</td><td>'+l.assignedTo+'</td><td>'+sbadge(l.status)+'</td><td>'+fuLbl(l.followupDate)+'</td><td onclick="event.stopPropagation()">'+aBtns(l.id)+'</td></tr>';
+  }).join('') : '<tr><td colspan="10" style="text-align:center;padding:24px;color:#6b7280">No B2B leads.</td></tr>';
+}
+
+function renderFU() {
+  var t = tod(), nw = new Date(); nw.setDate(nw.getDate()+7);
+  var nws = nw.getFullYear()+'-'+String(nw.getMonth()+1).padStart(2,'0')+'-'+String(nw.getDate()).padStart(2,'0');
+  var data = myLeads().filter(function(l){ return l.followupDate&&isActive(l); });
+  data.sort(function(a,b){ return a.followupDate.localeCompare(b.followupDate); });
+  document.getElementById('fuT').textContent = data.filter(function(l){ return l.followupDate===t; }).length;
+  document.getElementById('fuO').textContent = data.filter(function(l){ return l.followupDate<t; }).length;
+  document.getElementById('fuW').textContent = data.filter(function(l){ return l.followupDate>t&&l.followupDate<=nws; }).length;
+  document.getElementById('fuU').textContent = data.filter(function(l){ return l.followupDate>nws; }).length;
+  document.getElementById('fuTb').innerHTML = data.length ? data.map(function(l){
+    var d=l.followupDate, p='';
+    if(d<t) p='<span class="fu-over">🔴 Overdue</span>';
+    else if(d===t) p='<span class="fu-today">🔴 TODAY</span>';
+    else { var df=Math.ceil((new Date(d)-new Date(t))/86400000); p='<span class="fu-soon">In '+df+' day'+(df>1?'s':'')+'</span>'; }
+    return '<tr class="click-row '+fuRow(l)+'" onclick="viewLead(\''+l.id+'\')"><td>'+p+'</td><td>'+d+'</td><td><strong>'+l.client+'</strong></td><td><span class="badge b'+(l.segment||'b2c').toLowerCase()+'">'+l.segment+'</span></td><td>'+(l.contact||'—')+'</td><td>'+l.assignedTo+'</td><td>'+sbadge(l.status)+'</td><td onclick="event.stopPropagation()">'+aBtns(l.id)+'</td></tr>';
+  }).join('') : '<tr><td colspan="8" style="text-align:center;padding:24px;color:#16a34a">✅ No follow-ups pending!</td></tr>';
+}
+
+function renderRep() {
+  var t = tod();
+  document.getElementById('repCards').innerHTML = [
+    {l:'Total Leads',v:leads.length,c:'navy'},
+    {l:'B2B',v:leads.filter(function(l){return l.segment==='B2B';}).length,c:'purple'},
+    {l:'B2C',v:leads.filter(function(l){return l.segment==='B2C';}).length,c:'blue'},
+    {l:'Won',v:leads.filter(function(l){return l.status==='Won';}).length,c:'green'},
+  ].map(function(c){ return '<div class="card"><div class="lbl">'+c.l+'</div><div class="val '+c.c+'">'+c.v+'</div></div>'; }).join('');
+  document.getElementById('repTb').innerHTML = team.members.map(function(m){
+    var sl = leads.filter(function(l){ return l.assignedTo===m.name; });
+    return '<tr><td><strong>'+m.name+'</strong></td><td>'+sl.length+'</td><td>'+sl.filter(function(l){return l.segment==='B2B';}).length+'</td><td>'+sl.filter(function(l){return l.segment==='B2C';}).length+'</td><td style="color:#16a34a;font-weight:700">'+sl.filter(function(l){return l.status==='Won';}).length+'</td><td style="color:#dc2626">'+sl.filter(function(l){return l.status==='Lost';}).length+'</td><td>'+sl.filter(function(l){return isActive(l);}).length+'</td><td style="color:#d97706;font-weight:700">'+sl.filter(function(l){return l.followupDate===t&&isActive(l);}).length+'</td></tr>';
+  }).join('');
+  document.getElementById('allTb').innerHTML = leads.slice().reverse().map(function(l,i){
+    return '<tr class="click-row" onclick="viewLead(\''+l.id+'\')"><td>'+(i+1)+'</td><td>'+fmtDate(l.date)+'</td><td><strong>'+l.client+'</strong></td><td><span class="badge b'+(l.segment||'b2c').toLowerCase()+'">'+l.segment+'</span></td><td>'+l.assignedTo+'</td><td>'+sbadge(l.status)+'</td><td>'+fuLbl(l.followupDate)+'</td><td onclick="event.stopPropagation()">'+aBtns(l.id)+'</td></tr>';
+  }).join('');
+}
+
+function renderTeam() {
+  document.getElementById('teamTb').innerHTML = team.members.length ? team.members.map(function(m,i){
+    return '<tr><td>'+(i+1)+'</td><td><strong>'+m.name+'</strong></td><td><span class="badge bb2c">Sales</span></td><td>'+leads.filter(function(l){return l.assignedTo===m.name;}).length+'</td><td><button class="btn bn2 bsm" onclick="openEditMember('+i+')">Edit</button> <button class="btn bsm bdel" style="margin-left:3px" onclick="removeMember('+i+',this)">Remove</button></td></tr>';
+  }).join('') : '<tr><td colspan="5" style="text-align:center;padding:20px;color:#6b7280">No members.</td></tr>';
+}
+
+function renderProdManage() {
+  document.getElementById('prodManage').innerHTML = prods.map(function(p,i){
+    return '<div style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:20px;background:#f0f2f8;border:1px solid #e2e8f0;font-size:12px">'+p+'<button onclick="removeProd('+i+')" style="background:none;border:none;color:#dc2626;cursor:pointer;font-size:14px;line-height:1;padding:0">×</button></div>';
+  }).join('');
+}
+
+// ===== VIEW LEAD =====
+function viewLead(id) {
+  var l = leads.find(function(x){ return x.id===id; });
+  if (!l) return;
+  document.getElementById('viewTitle').textContent = l.client;
+  var pa = Array.isArray(l.product) ? l.product : (l.product ? [l.product] : []);
+  document.getElementById('viewBody').innerHTML =
+    '<div style="grid-column:1/-1;padding-bottom:10px;border-bottom:1px solid #e2e8f0;display:flex;gap:6px;flex-wrap:wrap"><span class="badge b'+(l.segment||'b2c').toLowerCase()+'">'+l.segment+'</span>'+sbadge(l.status)+(l.b2bType?'<span class="badge bb2b">'+l.b2bType+'</span>':'')+'</div>'+
+    vr('📅 Date',fmtDate(l.date))+vr('📞 Contact',l.contact||'—')+vr('📍 Area',l.area||'—')+vr('👤 Assigned',l.assignedTo)+
+    vr('🔔 Follow-up',fuLbl(l.followupDate))+vr('💰 Budget',l.budget?'Rs. '+l.budget:'—')+vr('📣 Source',l.source||'—')+
+    '<div style="grid-column:1/-1"><div style="font-size:10px;font-weight:700;color:#6b7280;text-transform:uppercase;margin-bottom:6px">📦 Products</div><div>'+
+    (pa.length?pa.map(function(x){return '<span class="pt" style="font-size:11px;padding:3px 10px">'+x+'</span>';}).join(' '):'—')+'</div></div>'+
+    (l.notes?'<div style="grid-column:1/-1"><div style="font-size:10px;font-weight:700;color:#6b7280;text-transform:uppercase;margin-bottom:4px">Notes</div><div style="font-size:13px">'+l.notes+'</div></div>':'') +
+    (l.payment && l.payment.total ? '<div style="grid-column:1/-1;background:#0B1425;border-radius:8px;padding:14px;margin-top:4px"><div style="font-size:11px;font-weight:700;color:#C9A84C;margin-bottom:10px">💰 PAYMENT SUMMARY</div><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:10px"><div><div style="font-size:9px;color:rgba(255,255,255,0.4);margin-bottom:2px">NET SALES</div><div style="font-size:14px;font-weight:700;color:#60a5fa">Rs. '+(l.payment.netSale||0).toLocaleString('en-IN')+'</div></div><div><div style="font-size:9px;color:rgba(255,255,255,0.4);margin-bottom:2px">TOTAL BILL</div><div style="font-size:14px;font-weight:700;color:#fff">Rs. '+l.payment.total.toLocaleString('en-IN')+'</div></div><div><div style="font-size:9px;color:rgba(255,255,255,0.4);margin-bottom:2px">ADVANCE</div><div style="font-size:14px;font-weight:700;color:#C9A84C">Rs. '+(l.payment.advTotal||0).toLocaleString('en-IN')+'</div></div><div><div style="font-size:9px;color:rgba(255,255,255,0.4);margin-bottom:2px">BALANCE</div><div style="font-size:16px;font-weight:800;color:'+(l.payment.balance<=0?'#4ade80':'#f87171')+'">Rs. '+(l.payment.balance||0).toLocaleString('en-IN')+'</div></div></div></div>' : '');
+  document.getElementById('viewEditBtn').onclick = function(){ closePop('viewPop'); editLead(id); };
+  // Notes button
+  var actBtn = document.getElementById('viewActBtn');
+  if (actBtn) actBtn.onclick = function(){
+    closePop('viewPop');
+    document.getElementById('actClientName').textContent = l.client;
+    renderActivityLog(id);
+    openPop('actPop');
+  };
+  var payBtn = document.getElementById('viewPayBtn');
+  if (l.status === 'Won') { payBtn.style.display='inline-flex'; payBtn.textContent='📦 Sales Order'; payBtn.onclick=function(){ closePop('viewPop'); curOrderLeadId=id; openOrderFromLead(id); }; }
+  else { payBtn.style.display='none'; }
+  openPop('viewPop');
+}
+
+function vr(lbl,val) {
+  return '<div><div style="font-size:10px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:3px">'+lbl+'</div><div style="font-size:13px">'+val+'</div></div>';
+}
+
+// ===== ADD/EDIT LEAD =====
+function buildPchk(sel) {
+  var selected = Array.isArray(sel) ? sel : (sel ? [sel] : []);
+  document.getElementById('pchk').innerHTML = prods.map(function(p,i){
+    var on = selected.includes(p);
+    return '<div class="pitem'+(on?' on':'')+'" id="pi_'+i+'" onclick="toggleP('+i+')">'+p+'</div>';
+  }).join('');
+  document.getElementById('pchk').className = 'pchk-wrap ok';
+  document.getElementById('pErr').style.display = 'none';
+}
+
+function toggleP(i) {
+  var el = document.getElementById('pi_'+i);
+  if (el) el.classList.toggle('on');
+}
+
+function getSelP() {
+  var items = document.querySelectorAll('#pchk .pitem.on');
+  return Array.from(items).map(function(el){ return el.textContent.trim(); });
+}
+
+function setStatus(seg) {
+  var el = document.getElementById('fStatus');
+  if (seg === 'B2B') {
+    el.innerHTML = '<option>New</option><option>Called</option><option>Site Visit Scheduled</option><option>Visited</option><option>Meeting Done</option><option>Sample Sent</option><option>Active Partner</option><option>Won</option><option>Not Interested</option>';
+  } else {
+    el.innerHTML = '<option>New</option><option>Called</option><option>Site Visit Scheduled</option><option>Visited</option><option>Quoted</option><option>Won</option><option>Lost</option>';
+  }
+}
+
+function toggleB2B() {
+  var seg = document.getElementById('fSeg').value;
+  document.getElementById('b2bTF').classList.toggle('hide', seg !== 'B2B');
+  setStatus(seg);
+}
+
+function liveVal() {
+  // Client name
+  var c = document.getElementById('fClient');
+  if (c.classList.contains('req-f')) {
+    if (c.value.trim()) { c.style.borderColor='#e2e8f0'; c.style.background='#fff'; }
+    else { c.style.borderColor='#fca5a5'; c.style.background='#fff9f9'; }
+  }
+  // Contact
+  var co = document.getElementById('fContact');
+  if (co.classList.contains('req-f')) {
+    if (co.value.trim()) { co.style.borderColor='#e2e8f0'; co.style.background='#fff'; }
+    else { co.style.borderColor='#fca5a5'; co.style.background='#fff9f9'; }
+  }
+  // Follow-up
+  var fu = document.getElementById('fFU');
+  if (fu.classList.contains('req-f')) {
+    if (fu.value) { fu.style.borderColor='#e2e8f0'; fu.style.background='#fff'; }
+    else { fu.style.borderColor='#fca5a5'; fu.style.background='#fff9f9'; }
+  }
+}
+
+function openAdd(seg) {
+  editId = null;
+  document.getElementById('addTitle').textContent = 'Add New Lead';
+  document.getElementById('fSeg').value = seg || 'B2C';
+  document.getElementById('fDate').value = tod();
+  // Reset required fields to red start
+  ['fClient','fContact','fFU'].forEach(function(id){
+    var el = document.getElementById(id);
+    el.value = '';
+    el.style.borderColor = '#fca5a5';
+    el.style.background = '#fff9f9';
+    el.oninput = liveVal;
+    el.onchange = liveVal;
+  });
+  document.getElementById('fArea').value = '';
+  document.getElementById('fNotes').value = '';
+  document.getElementById('fBudget').value = '';
+  document.getElementById('fSrc').value = 'WhatsApp';
+  toggleB2B();
+  buildPchk([]);
+  populateAssign();
+  openPop('addPop');
+}
+
+function editLead(id) {
+  var l = leads.find(function(x){ return x.id===id; });
+  if (!l) return;
+  if (curRole !== 'founder' && l.assignedTo !== curUser) return;
+  editId = id;
+  document.getElementById('addTitle').textContent = 'Edit — '+l.client;
+  document.getElementById('fSeg').value = l.segment || 'B2C';
+  document.getElementById('fDate').value = toInputDate(l.date);
+  document.getElementById('fClient').value = l.client;
+  document.getElementById('fContact').value = l.contact || '';
+  document.getElementById('fArea').value = l.area || '';
+  document.getElementById('fNotes').value = l.notes || '';
+  document.getElementById('fBudget').value = l.budget || '';
+  document.getElementById('fFU').value = l.followupDate ? toInputDate(l.followupDate) : '';
+  document.getElementById('fSrc').value = l.source || 'WhatsApp';
+  // Set up live validation on required fields
+  ['fClient','fContact','fFU'].forEach(function(id){
+    var el = document.getElementById(id);
+    el.style.borderColor = '#e2e8f0';
+    el.style.background = '#fff';
+    el.oninput = liveVal;
+    el.onchange = liveVal;
+  });
+  toggleB2B();
+  if (l.b2bType) document.getElementById('fB2BT').value = l.b2bType;
+  var status = document.getElementById('fStatus');
+  if (l.status) status.value = l.status;
+  buildPchk(l.product);
+  populateAssign();
+  if (curRole === 'founder' && l.assignedTo) document.getElementById('fAssign').value = l.assignedTo;
+  openPop('addPop');
+}
+
+function saveLead() {
+  var ok = true;
+  var client = document.getElementById('fClient').value.trim();
+  var contact = document.getElementById('fContact').value.trim();
+  var fu = document.getElementById('fFU').value;
+  var selP = getSelP();
+
+  var fCl = document.getElementById('fClient');
+  var fCo = document.getElementById('fContact');
+  var fFu = document.getElementById('fFU');
+  if (!client) { fCl.style.borderColor='#dc2626'; fCl.style.background='#fff9f9'; ok=false; }
+  else { fCl.style.borderColor='#e2e8f0'; fCl.style.background='#fff'; }
+  if (!contact) { fCo.style.borderColor='#dc2626'; fCo.style.background='#fff9f9'; ok=false; }
+  else { fCo.style.borderColor='#e2e8f0'; fCo.style.background='#fff'; }
+  if (!fu) { fFu.style.borderColor='#dc2626'; fFu.style.background='#fff9f9'; ok=false; }
+  else { fFu.style.borderColor='#e2e8f0'; fFu.style.background='#fff'; }
+  if (!selP.length) {
+    document.getElementById('pchk').style.borderColor = '#dc2626';
+    document.getElementById('pErr').style.display = 'block';
+    ok = false;
+  }
+  if (!ok) return;
+
+  var assignedTo = curRole === 'founder' ? document.getElementById('fAssign').value : curUser;
+  // Preserve existing payment data if editing a Won lead
+  var existingPayment = null;
+  if (editId) {
+    var existingLead = leads.find(function(x){ return x.id===editId; });
+    if (existingLead && existingLead.payment) existingPayment = existingLead.payment;
+  }
+  var lead = {
+    id: editId || uid(),
+    segment: document.getElementById('fSeg').value,
+    date: document.getElementById('fDate').value || tod(),
+    client: client, contact: contact, area: document.getElementById('fArea').value,
+    product: selP, source: document.getElementById('fSrc').value,
+    b2bType: document.getElementById('fB2BT').value, assignedTo: assignedTo,
+    status: document.getElementById('fStatus').value, followupDate: fu,
+    budget: document.getElementById('fBudget').value, notes: document.getElementById('fNotes').value,
+    payment: existingPayment || undefined
+  };
+  if (editId) { var idx = leads.findIndex(function(x){return x.id===editId;}); if(idx>-1) leads[idx]=lead; }
+  else leads.push(lead);
+  sav(); closePop('addPop');
+  if (lead.status === 'Won') {
+    curOrderLeadId = lead.id;
+    openOrderFromLead(lead.id);
+  } else {
+    renderAll();
+  }
+}
+
+// ===== LEDGER PAYMENT SYSTEM =====
+var payLeadId = null;
+var ledgerEntries = []; // working copy
+
+function openPayPop(id) {
+  payLeadId = id;
+  var l = leads.find(function(x){ return x.id===id; });
+  if (!l) return;
+  document.getElementById('payClient').textContent = l.client;
+  // Load existing ledger entries — DO NOT ERASE
+  ledgerEntries = (l.payment && l.payment.ledger) ? JSON.parse(JSON.stringify(l.payment.ledger)) : [];
+  // Set default date
+  document.getElementById('entDate').value = tod();
+  document.getElementById('entType').value = 'sale';
+  document.getElementById('entDesc').value = '';
+  document.getElementById('entAmt').value = '';
+  renderLedger();
+  openPop('payPop');
+}
+
+function updateEntryColor() {
+  var t = document.getElementById('entType').value;
+  var desc = document.getElementById('entDesc');
+  var defaults = {sale:'Product sale',install:'Installation charge',transport:'Transportation',advance:'Advance payment received',discount:'Discount given',loss:'Loss / damage',other:'Other'};
+  if (!desc.value) desc.placeholder = defaults[t] || '';
+}
+
+function addLedgerEntry() {
+  var date = document.getElementById('entDate').value;
+  var type = document.getElementById('entType').value;
+  var desc = document.getElementById('entDesc').value.trim();
+  var amt = parseFloat(document.getElementById('entAmt').value) || 0;
+  if (!amt) { document.getElementById('entAmt').style.borderColor='#dc2626'; return; }
+  if (!desc) desc = document.getElementById('entType').options[document.getElementById('entType').selectedIndex].text;
+  ledgerEntries.push({ date: date || tod(), type: type, desc: desc, amt: amt, id: uid() });
+  document.getElementById('entDesc').value = '';
+  document.getElementById('entAmt').value = '';
+  document.getElementById('entAmt').style.borderColor = '';
+  renderLedger();
+}
+
+function delLedgerEntry(eid) {
+  ledgerEntries = ledgerEntries.filter(function(e){ return e.id !== eid; });
+  renderLedger();
+}
+
+function calcFromLedger() {
+  var sale=0, install=0, transport=0, discount=0, loss=0, advance=0, other=0;
+  ledgerEntries.forEach(function(e){
+    if (e.type==='sale') sale += e.amt;
+    else if (e.type==='install') install += e.amt;
+    else if (e.type==='transport') transport += e.amt;
+    else if (e.type==='discount') discount += e.amt;
+    else if (e.type==='loss') loss += e.amt;
+    else if (e.type==='advance') advance += e.amt;
+    else other += e.amt;
+  });
+  var total = sale + install + transport + other - discount - loss;
+  var netSale = sale - discount - loss; // for incentive calc
+  var balance = Math.max(0, total - advance);
+  return { sale:sale, install:install, transport:transport, discount:discount, loss:loss, advance:advance, total:total, netSale:netSale, balance:balance };
+}
+
+function setEl(id, val, color) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = val;
+  if (color) el.style.color = color;
+}
+
+function renderLedger() {
+  var totals = calcFromLedger();
+  var fmt = function(n){ return 'Rs. '+(n||0).toLocaleString('en-IN'); };
+  setEl('ptNetSale', fmt(totals.netSale));
+  setEl('ptTotal', fmt(totals.total));
+  setEl('ptAdv', fmt(totals.advance));
+  setEl('ptBal', fmt(totals.balance), totals.balance <= 0 ? '#4ade80' : '#f87171');
+  // Type colors
+  var typeColor = {sale:'#dbeafe',install:'#fef3c7',transport:'#f3e8ff',advance:'#d1fae5',discount:'#fee2e2',loss:'#fee2e2',other:'#f1f5f9'};
+  var typeLabel = {sale:'💼 Sale',install:'🔧 Install',transport:'🚚 Transport',advance:'💵 Advance',discount:'🏷️ Discount',loss:'❌ Loss',other:'📝 Other'};
+  var isDeduct = {discount:true,loss:true};
+  var tb = document.getElementById('ledgerTb');
+  if (!ledgerEntries.length) {
+    tb.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:16px;color:#6b7280">No entries yet.</td></tr>';
+    return;
+  }
+  tb.innerHTML = ledgerEntries.map(function(e){
+    var deduct = isDeduct[e.type];
+    var isAdv = e.type === 'advance';
+    return '<tr style="background:'+typeColor[e.type]+'">' +
+      '<td>'+fmtDate(e.date)+'</td>' +
+      '<td><span style="font-size:11px;font-weight:700">'+typeLabel[e.type]+'</span></td>' +
+      '<td>'+e.desc+'</td>' +
+      '<td style="font-weight:700;color:'+(deduct?'#dc2626':isAdv?'#16a34a':'#0B1425')+'">'+(deduct?'- ':'+ ')+'Rs. '+e.amt.toLocaleString('en-IN')+'</td>' +
+      '<td><button class="btn bsm bdel" onclick="delLedgerEntry(\''+e.id+'\')">×</button></td>' +
+      '</tr>';
+  }).join('');
+}
+
+function savePay() {
+  var totals = calcFromLedger();
+  var l = leads.find(function(x){ return x.id===payLeadId; });
+  if (l) {
+    l.payment = {
+      ledger: ledgerEntries,
+      saleAmount: totals.sale,
+      installAmount: totals.install,
+      transport: totals.transport,
+      discount: totals.discount,
+      loss: totals.loss,
+      total: totals.total,
+      advTotal: totals.advance,
+      balance: totals.balance,
+      netSale: totals.netSale
+    };
+    sav();
+  }
+  closePop('payPop');
+  renderAll();
+}
+
+function skipPay() { closePop('payPop'); renderAll(); }
+
+function calcBal() {} // kept for compatibility
+
+// ===== DELETE =====
+function askDel(id) {
+  var l = leads.find(function(x){ return x.id===id; });
+  if (!l) return;
+  delId = id;
+  document.getElementById('delName').textContent = l.client + ' — ' + pText(l.product);
+  openPop('delPop');
+}
+
+function doDelete() {
+  if (!delId) return;
+  leads = leads.filter(function(x){ return x.id !== delId; });
+  delId = null; sav(); closePop('delPop'); renderAll();
+}
+
+// ===== TEAM =====
+function openAddMember() { editMemIdx = null; document.getElementById('memTitle').textContent = 'Add Member'; document.getElementById('mName').value = ''; document.getElementById('mPin').value = ''; openPop('memPop'); }
+function openEditMember(i) { editMemIdx = i; document.getElementById('memTitle').textContent = 'Edit — '+team.members[i].name; document.getElementById('mName').value = team.members[i].name; document.getElementById('mPin').value = team.members[i].pin; openPop('memPop'); }
+function saveMember() {
+  var name = document.getElementById('mName').value.trim();
+  var pin = document.getElementById('mPin').value.trim();
+  if (!name || !pin || pin.length < 4) { alert('Name and 4-digit PIN required!'); return; }
+  if (editMemIdx !== null) { team.members[editMemIdx] = {name:name, pin:pin}; }
+  else { if (team.members.find(function(m){return m.name===name;})) { alert('Member exists!'); return; } team.members.push({name:name, pin:pin}); }
+  savT(); closePop('memPop'); refreshLoginDrop(); renderTeam(); populateAssign();
+}
+function removeMember(i, btn) {
+  if (btn.dataset.c === '1') { team.members.splice(i,1); savT(); refreshLoginDrop(); renderTeam(); populateAssign(); }
+  else { btn.dataset.c = '1'; btn.textContent = 'Sure?'; btn.style.background = '#dc2626'; btn.style.color = '#fff'; setTimeout(function(){ btn.dataset.c=''; btn.textContent='Remove'; btn.style.background=''; btn.style.color=''; }, 3000); }
+}
+
+// ===== PRODUCTS =====
+function addProd() { var n = document.getElementById('newProd').value.trim(); if(!n) return; if(prods.includes(n)){alert('Exists!');return;} prods.push(n); savP(); document.getElementById('newProd').value=''; renderProdManage(); }
+function removeProd(i) { prods.splice(i,1); savP(); renderProdManage(); }
+function changeFounderPin() { var p = document.getElementById('newFPin').value.trim(); if(!p||p.length<4){alert('4-digit PIN required!');return;} team.founderPin=p; savT(); document.getElementById('newFPin').value=''; alert('PIN updated!'); }
+
+// ===== FIX 3: CONFIRM REMOVE PRODUCT IN ORDER =====
+var removeProdIdx = null;
+function confirmRemoveProd(i) {
+  removeProdIdx = i;
+  var name = ordProds[i].name || 'this product';
+  if (document.getElementById('removeProdPop')) {
+    document.getElementById('removeProdName').textContent = name;
+    openPop('removeProdPop');
+  }
+}
+function doRemoveProd() {
+  if (removeProdIdx !== null) {
+    ordProds.splice(removeProdIdx, 1);
+    removeProdIdx = null;
+    renderOrdProds();
+    calcOrdTotal();
+  }
+  closePop('removeProdPop');
+}
+
+// ===== FIX 9: ADD NEW PRODUCT IN CHECKLIST =====
+function addNewProdInline() {
+  var inp = document.getElementById('newInlineProd');
+  if (!inp) return;
+  var name = inp.value.trim();
+  if (!name) return;
+  if (!prods.includes(name)) {
+    prods.push(name);
+    savP();
+    if (curRole === 'founder') renderProdManage();
+  }
+  // Auto select it
+  buildPchk(getSelP().concat([name]));
+  inp.value = '';
+}
+
+// ===== FIX 11: ACTIVITY LOG =====
+function addActivityNote() {
+  var txt = document.getElementById('actNote');
+  if (!txt || !txt.value.trim()) return;
+  var leadId = actLeadId;
+  var l = leads.find(function(x){ return x.id===leadId; });
+  if (!l) return;
+  if (!l.activityLog) l.activityLog = [];
+  l.activityLog.unshift({ date: tod(), time: new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}), user: curUser, note: txt.value.trim() });
+  txt.value = '';
+  sav();
+  renderActivityLog(leadId);
+}
+
+var actLeadId = null;
+function renderActivityLog(leadId) {
+  actLeadId = leadId;
+  var l = leads.find(function(x){ return x.id===leadId; });
+  var log = (l && l.activityLog) || [];
+  var el = document.getElementById('actLogList');
+  if (!el) return;
+  el.innerHTML = log.length ? log.map(function(e){
+    return '<div style="padding:10px;border-left:3px solid #C9A84C;margin-bottom:8px;background:#fafafa;border-radius:0 8px 8px 0">'+
+      '<div style="font-size:10px;color:#6b7280;margin-bottom:4px">📅 '+fmtDate(e.date)+' '+e.time+' — <strong>'+e.user+'</strong></div>'+
+      '<div style="font-size:13px;color:#1a1a2e">'+e.note+'</div>'+
+      '</div>';
+  }).join('') : '<div style="text-align:center;padding:16px;color:#6b7280;font-size:13px">No notes yet. Add first note below.</div>';
+}
+
+// ===== POPUP HELPERS =====
+function openPop(id) { document.getElementById(id).classList.add('show'); }
+function closePop(id) { document.getElementById(id).classList.remove('show'); }
+
+// ===== ACCOUNTANT VIEW — read only =====
+function isReadOnly() { return curRole === 'accountant'; }
+
+// ===== ORDERS MODULE =====
+var curOrderId = null;
+var ordProds = [];
+var ordPmts = [];
+var orderCounter = parseInt(localStorage.getItem('wdp_ord_counter') || '124');
+
+function genOrderId() {
+  orderCounter++;
+  localStorage.setItem('wdp_ord_counter', orderCounter);
+  return 'WDP-' + new Date().getFullYear() + '-' + String(orderCounter).padStart(5,'0');
+}
+
+function openOrderFromLead(leadId) {
+  var l = leads.find(function(x){ return x.id===leadId; });
+  if (!l) return;
+  // Check if order already exists for this lead
+  var existing = orders.find(function(o){ return o.leadId===leadId; });
+  if (existing) { openOrder(existing.id); return; }
+  // Create new order
+  curOrderId = genOrderId();
+  ordProds = [];
+  ordPmts = [];
+  document.getElementById('orderId').textContent = curOrderId;
+  document.getElementById('orderClient2').textContent = l.client + ' — ' + (l.contact||'');
+  document.getElementById('ordCustName').value = l.client || '';
+  document.getElementById('ordPhone').value = l.contact || '';
+  document.getElementById('ordType').value = l.segment || 'B2C';
+  document.getElementById('ordSalesperson').value = l.assignedTo || curUser;
+  document.getElementById('ordDate').value = tod();
+  document.getElementById('ordArea').value = l.area || '';
+  document.getElementById('ordDispStatus').value = 'Order Confirmed';
+  document.getElementById('pmtDate').value = tod();
+  var tEl = document.getElementById('ordTransport');
+  var dEl = document.getElementById('ordExtraDisc');
+  var lEl = document.getElementById('ordLoss');
+  if (tEl) tEl.value = 0;
+  if (dEl) dEl.value = 0;
+  if (lEl) lEl.value = 0;
+  // Pre-fill products from lead
+  if (l.product && l.product.length) {
+    l.product.forEach(function(p){ ordProds.push({name:p,qty:1,unit:'pcs',rate:0,disc:0}); });
+  } else {
+    ordProds.push({name:'',qty:1,unit:'pcs',rate:0,disc:0});
+  }
+  renderOrdProds();
+  renderOrdPmts();
+  renderStatusBar('Order Confirmed');
+  openPop('orderPop');
+}
+
+function openOrder(ordId) {
+  var o = orders.find(function(x){ return x.id===ordId; });
+  if (!o) return;
+  curOrderId = o.id;
+  ordProds = JSON.parse(JSON.stringify(o.products||[]));
+  ordPmts = JSON.parse(JSON.stringify(o.payments||[]));
+  document.getElementById('orderId').textContent = o.id;
+  document.getElementById('orderClient2').textContent = o.custName + ' — ' + (o.phone||'');
+  document.getElementById('ordCustName').value = o.custName||'';
+  document.getElementById('ordPhone').value = o.phone||'';
+  document.getElementById('ordType').value = o.custType||'B2C';
+  document.getElementById('ordSalesperson').value = o.salesperson||'';
+  document.getElementById('ordDate').value = toInputDate(o.date);
+  document.getElementById('ordArea').value = o.area||'';
+  document.getElementById('ordDispStatus').value = o.dispStatus||'Order Confirmed';
+  document.getElementById('pmtDate').value = tod();
+  // Load extra fields
+  var tEl = document.getElementById('ordTransport');
+  var iEl = document.getElementById('ordInstall');
+  var dEl = document.getElementById('ordExtraDisc');
+  var lEl = document.getElementById('ordLoss');
+  if (tEl) tEl.value = o.transport||0;
+  if (iEl) iEl.value = o.install||0;
+  if (dEl) dEl.value = o.extraDisc||0;
+  if (lEl) lEl.value = o.loss||0;
+  renderOrdProds();
+  renderOrdPmts();
+  renderStatusBar(o.dispStatus||'Order Confirmed');
+  openPop('orderPop');
+}
+
+var statusSteps = ['Order Confirmed','Payment Cleared','Order Completed'];
+
+function renderStatusBar(current) {
+  var idx = statusSteps.indexOf(current);
+  if (idx === -1) idx = 0;
+  var readonly = isReadOnly();
+  document.getElementById('statusBar').innerHTML = statusSteps.map(function(s,i){
+    var done = i < idx, active = i === idx;
+    var bg = active ? '#C9A84C' : done ? '#d1fae5' : '#f0f0f0';
+    var color = active ? '#0B1425' : done ? '#16a34a' : '#6b7280';
+    var cursor = readonly ? 'default' : 'pointer';
+    var onclick = readonly ? '' : 'onclick="setOrderStatus(\''+s+'\')"';
+    return '<div '+onclick+' style="padding:7px 16px;border-radius:20px;font-size:11px;font-weight:700;background:'+bg+';color:'+color+';cursor:'+cursor+';border:2px solid '+(active?'#C9A84C':done?'#86efac':'#e2e8f0')+';">'+s+'</div>';
+  }).join('<div style="color:#ccc;padding:0 4px;align-self:center;font-size:18px">›</div>');
+  // Also sync the hidden select
+  var sel = document.getElementById('ordDispStatus');
+  if (sel) sel.value = statusSteps[idx];
+}
+
+function setOrderStatus(status) {
+  renderStatusBar(status);
+}
+
+function renderOrdProds() {
+  var readonly = isReadOnly();
+  document.getElementById('ordProdTb').innerHTML = ordProds.length ? ordProds.map(function(p,i){
+    var total = (p.qty * p.rate) - (p.disc||0);
+    if (readonly) {
+      return '<tr><td>'+p.name+'</td><td>'+p.qty+'</td><td>'+p.unit+'</td><td>Rs. '+p.rate+'</td><td>Rs. '+(p.disc||0)+'</td><td style="font-weight:700">Rs. '+total.toLocaleString('en-IN')+'</td><td></td></tr>';
+    }
+    return '<tr>' +
+      '<td><input type="text" value="'+p.name+'" placeholder="Type product name..." oninput="ordProds['+i+'].name=this.value" style="width:150px;padding:5px 7px;border:1px solid #e2e8f0;border-radius:5px;font-size:12px"></td>'+
+      '<td><input type="number" value="'+p.qty+'" oninput="ordProds['+i+'].qty=parseFloat(this.value)||0;updRow('+i+')" style="width:60px;padding:5px;border:1px solid #e2e8f0;border-radius:5px;font-size:12px"></td>'+
+      '<td><select onchange="ordProds['+i+'].unit=this.value" style="width:70px;padding:5px;border:1px solid #e2e8f0;border-radius:5px;font-size:12px"><option>pcs</option><option>sqft</option><option>rft</option><option>set</option><option>box</option></select></td>'+
+      '<td><input type="number" value="'+p.rate+'" oninput="ordProds['+i+'].rate=parseFloat(this.value)||0;updRow('+i+')" style="width:80px;padding:5px;border:1px solid #e2e8f0;border-radius:5px;font-size:12px"></td>'+
+      '<td><input type="number" value="'+(p.disc||0)+'" oninput="ordProds['+i+'].disc=parseFloat(this.value)||0;updRow('+i+')" style="width:70px;padding:5px;border:1px solid #e2e8f0;border-radius:5px;font-size:12px"></td>'+
+      '<td style="font-weight:700;color:#0B1425" id="rowTotal_'+i+'">Rs. '+total.toLocaleString('en-IN')+'</td>'+
+      '<td><button onclick="confirmRemoveProd('+i+')" style="background:#fee2e2;color:#dc2626;border:none;border-radius:4px;padding:3px 7px;cursor:pointer;font-size:12px">×</button></td>'+
+      '</tr>';
+  }).join('') : '<tr><td colspan="7" style="text-align:center;padding:12px;color:#6b7280">No products added</td></tr>';
+  calcOrdTotal();
+}
+
+function updRow(i) {
+  var p = ordProds[i];
+  var total = (p.qty * p.rate) - (p.disc||0);
+  var el = document.getElementById('rowTotal_'+i);
+  if (el) el.textContent = 'Rs. ' + total.toLocaleString('en-IN');
+  calcOrdTotal();
+}
+
+function addOrdProd() {
+  ordProds.push({name:'',qty:1,unit:'pcs',rate:0,disc:0});
+  renderOrdProds();
+}
+
+function calcOrdTotal() {
+  var subtotal=0, disc=0;
+  ordProds.forEach(function(p){ subtotal += (p.qty||0)*(p.rate||0); disc += (p.disc||0); });
+  var transport = parseFloat(document.getElementById('ordTransport') ? document.getElementById('ordTransport').value : 0)||0;
+  var install = parseFloat(document.getElementById('ordInstall') ? document.getElementById('ordInstall').value : 0)||0;
+  var extraDisc = parseFloat(document.getElementById('ordExtraDisc') ? document.getElementById('ordExtraDisc').value : 0)||0;
+  var loss = parseFloat(document.getElementById('ordLoss') ? document.getElementById('ordLoss').value : 0)||0;
+  // All deducted: transport, install, extraDisc, loss
+  var grand = subtotal - disc - transport - install - extraDisc - loss;
+  var advTotal = ordPmts.reduce(function(s,p){ return s + (p.type==='refund' ? -p.amt : p.amt); }, 0);
+  var bal = Math.max(0, grand - advTotal);
+  var fmt = function(n){ return 'Rs. '+(n||0).toLocaleString('en-IN'); };
+  setEl('ordSubtotal', fmt(subtotal));
+  setEl('ordDiscount', fmt(disc));
+  setEl('ordTransportTot', fmt(transport));
+  setEl('ordInstallTot', fmt(install));
+  setEl('ordExtraTot', fmt(extraDisc+loss));
+  setEl('ordGrandTotal', fmt(grand));
+  setEl('ordBalance', fmt(bal), bal<=0?'#4ade80':'#f87171');
+}
+
+function renderOrdPmts() {
+  var readonly = isReadOnly();
+  var tb = document.getElementById('ordPayTb');
+  if (!ordPmts.length) { tb.innerHTML='<tr><td colspan="6" style="text-align:center;padding:12px;color:#6b7280">No payments yet</td></tr>'; calcOrdTotal(); return; }
+  tb.innerHTML = ordPmts.map(function(p,i){
+    var isRef = p.type==='refund';
+    var amtTxt = (isRef?'↩️ -':'✅ ')+'Rs. '+p.amt.toLocaleString('en-IN');
+    var imgLink = p.img ? '<a href="'+p.img+'" target="_blank" style="font-size:11px;color:#2563eb">📷 View</a>' : '—';
+    return '<tr style="background:'+(isRef?'#fff5f5':'')+'">'+
+      '<td>'+fmtDate(p.date)+'</td>'+
+      '<td style="font-weight:700;color:'+(isRef?'#dc2626':'#16a34a')+'">'+amtTxt+'</td>'+
+      '<td>'+p.mode+'</td>'+
+      '<td style="font-size:11px;color:#6b7280">'+(p.ref||'—')+'</td>'+
+      '<td>'+imgLink+'</td>'+
+      '<td>'+(readonly?'':'<button onclick="ordPmts.splice('+i+',1);renderOrdPmts()" style="background:#fee2e2;color:#dc2626;border:none;border-radius:4px;padding:2px 6px;cursor:pointer;font-size:11px">×</button>')+'</td></tr>';
+  }).join('');
+  calcOrdTotal();
+}
+
+function addOrdPayment() {
+  var amt = parseFloat(document.getElementById('pmtAmt').value)||0;
+  if (!amt) { document.getElementById('pmtAmt').style.borderColor='#dc2626'; return; }
+  var type = document.getElementById('pmtType').value;
+  var imgFile = document.getElementById('pmtImg').files[0];
+  var entry = {
+    date: document.getElementById('pmtDate').value||tod(),
+    amt: amt,
+    mode: document.getElementById('pmtMode').value,
+    ref: document.getElementById('pmtRef').value,
+    type: type,
+    img: null
+  };
+  if (imgFile) {
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      entry.img = e.target.result;
+      ordPmts.push(entry);
+      renderOrdPmts();
+    };
+    reader.readAsDataURL(imgFile);
+  } else {
+    ordPmts.push(entry);
+    renderOrdPmts();
+  }
+  document.getElementById('pmtAmt').value='';
+  document.getElementById('pmtRef').value='';
+  document.getElementById('pmtImg').value='';
+  document.getElementById('pmtAmt').style.borderColor='';
+}
+
+function getPayStatus(grand, advTotal) {
+  if (!grand) return 'Pending';
+  if (advTotal >= grand) return 'Fully Paid';
+  if (advTotal > 0) return 'Partially Paid';
+  return 'Balance Due';
+}
+
+function saveOrder() {
+  var subtotal=0, disc=0;
+  ordProds.forEach(function(p){ subtotal += (p.qty||0)*(p.rate||0); disc += (p.disc||0); });
+  var transport = parseFloat(document.getElementById('ordTransport')?document.getElementById('ordTransport').value:0)||0;
+  var install = parseFloat(document.getElementById('ordInstall')?document.getElementById('ordInstall').value:0)||0;
+  var extraDisc = parseFloat(document.getElementById('ordExtraDisc')?document.getElementById('ordExtraDisc').value:0)||0;
+  var loss = parseFloat(document.getElementById('ordLoss')?document.getElementById('ordLoss').value:0)||0;
+  var grand = subtotal - disc - transport - install - extraDisc - loss;
+  var advTotal = ordPmts.reduce(function(s,p){ return s+(p.type==='refund'?-p.amt:p.amt); }, 0);
+  var bal = Math.max(0, grand - advTotal);
+  var dispStatus = document.getElementById('ordDispStatus').value;
+  var order = {
+    id: curOrderId, leadId: curOrderLeadId,
+    custName: document.getElementById('ordCustName').value,
+    phone: document.getElementById('ordPhone').value,
+    custType: document.getElementById('ordType').value,
+    salesperson: document.getElementById('ordSalesperson').value,
+    date: document.getElementById('ordDate').value || tod(),
+    area: document.getElementById('ordArea').value,
+    products: ordProds,
+    subtotal: subtotal, discount: disc,
+    transport: transport, install: install, extraDisc: extraDisc, loss: loss,
+    grandTotal: grand, payments: ordPmts, advTotal: advTotal, balance: bal,
+    payStatus: getPayStatus(grand, advTotal),
+    dispStatus: dispStatus, updatedAt: tod()
+  };
+  var idx = orders.findIndex(function(o){ return o.id===curOrderId; });
+  if (idx > -1) orders[idx] = order; else orders.push(order);
+  savO(); closePop('orderPop'); renderOrders(); renderMySales();
+}
+
+var curOrderLeadId = null;
+
+function renderOrders() {
+  var filter = document.getElementById('ordFilter') ? document.getElementById('ordFilter').value : 'all';
+  var person = document.getElementById('ordPerson') ? document.getElementById('ordPerson').value : '';
+  var payF = document.getElementById('ordPayStatus') ? document.getElementById('ordPayStatus').value : '';
+  var now = new Date(), t = tod();
+  var data = orders.filter(function(o){
+    if (curRole === 'sales' && o.salesperson !== curUser) return false;
+    if (person && o.salesperson !== person) return false;
+    if (payF && o.payStatus !== payF) return false;
+    if (filter === 'today' && o.date !== t) return false;
+    if (filter === 'thisweek') { var d=new Date(o.date); var wk=new Date(now); wk.setDate(wk.getDate()-7); if(d<wk) return false; }
+    if (filter === 'thismonth') { var dm=new Date(o.date); if(dm.getMonth()!==now.getMonth()||dm.getFullYear()!==now.getFullYear()) return false; }
+    return true;
+  });
+  var totGrand=0, totAdv=0, totBal=0;
+  data.forEach(function(o){ totGrand+=o.grandTotal||0; totAdv+=o.advTotal||0; totBal+=o.balance||0; });
+  var fmt = function(n){ return 'Rs. '+(n||0).toLocaleString('en-IN'); };
+  var cardsEl = document.getElementById('ordCards');
+  if (cardsEl) cardsEl.innerHTML =
+    '<div class="card"><div class="lbl">Total Orders</div><div class="val navy">'+data.length+'</div></div>'+
+    '<div class="card"><div class="lbl">Total Amount</div><div class="val blue">'+fmt(totGrand)+'</div></div>'+
+    '<div class="card"><div class="lbl">Collected</div><div class="val green">'+fmt(totAdv)+'</div></div>'+
+    '<div class="card" style="border:2px solid #dc2626"><div class="lbl">Outstanding</div><div class="val red">'+fmt(totBal)+'</div></div>';
+  var payColor = {'Fully Paid':'#d1fae5','Partially Paid':'#fef3c7','Balance Due':'#fee2e2','Pending':'#f1f5f9'};
+  var payText = {'Fully Paid':'<span style="color:#16a34a;font-weight:700">Fully Paid</span>','Partially Paid':'<span style="color:#d97706;font-weight:700">Partially Paid</span>','Balance Due':'<span style="color:#dc2626;font-weight:700">Balance Due</span>','Pending':'<span style="color:#6b7280">Pending</span>'};
+  var tb = document.getElementById('ordTb');
+  if (tb) tb.innerHTML = data.length ? data.map(function(o,i){
+    var canEdit = !isReadOnly();
+    return '<tr style="cursor:pointer" onclick="openOrder(\''+o.id+'\')">'+
+      '<td style="font-weight:700;color:#C9A84C">'+o.id+'</td>'+
+      '<td>'+fmtDate(o.date)+'</td>'+
+      '<td><strong>'+o.custName+'</strong><br><span style="font-size:10px;color:#6b7280">'+o.phone+'</span></td>'+
+      '<td><span class="badge b'+(o.custType||'b2c').toLowerCase()+'">'+o.custType+'</span></td>'+
+      '<td style="max-width:120px">'+( o.products||[]).map(function(p){ return '<span class="pt">'+p.name+'</span>'; }).join(' ')+'</td>'+
+      '<td>'+o.salesperson+'</td>'+
+      '<td style="color:#16a34a;font-weight:700">'+fmt(o.grandTotal)+'</td>'+
+      '<td>'+fmt(o.grandTotal)+'</td>'+
+      '<td style="color:#C9A84C">'+fmt(o.advTotal)+'</td>'+
+      '<td style="color:'+(o.balance>0?'#dc2626':'#16a34a')+';font-weight:700">'+fmt(o.balance)+'</td>'+
+      '<td style="background:'+(payColor[o.payStatus]||'#f1f5f9')+';padding:4px 8px;border-radius:6px">'+(payText[o.payStatus]||o.payStatus)+'</td>'+
+      '<td style="font-size:11px;color:#6b7280">'+o.dispStatus+'</td>'+
+      '<td onclick="event.stopPropagation()"><button class="btn bn2 bsm" onclick="openOrder(\''+o.id+'\')">View</button></td>'+
+      '</tr>';
+  }).join('') : '<tr><td colspan="13" style="text-align:center;padding:24px;color:#6b7280">No orders found.</td></tr>';
+  // Also populate ordPerson dropdown
+  var sp = document.getElementById('ordPerson');
+  if (sp && curRole === 'founder') {
+    var cur = sp.value;
+    sp.innerHTML = '<option value="">All Salesperson</option>' + team.members.map(function(m){ return '<option value="'+m.name+'"'+(m.name===cur?' selected':'')+'>'+m.name+'</option>'; }).join('');
+  }
+}
+
+function exportOrders() {
+  var data = orders;
+  if (!data.length) { alert('No orders to export!'); return; }
+  var rows = [['Order ID','Date','Customer','Phone','Type','Salesperson','Products','Grand Total','Advance','Balance','Pay Status','Dispatch Status']];
+  data.forEach(function(o){
+    rows.push([o.id, o.date, o.custName, o.phone, o.custType, o.salesperson,
+      (o.products||[]).map(function(p){ return p.name+' '+p.qty+'x'+p.rate; }).join(' | '),
+      o.grandTotal, o.advTotal, o.balance, o.payStatus, o.dispStatus]);
+  });
+  var csv = rows.map(function(r){ return r.map(function(c){ return '"'+(c||'')+'"'; }).join(','); }).join('\n');
+  var a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+  a.download = 'WallDecorPro_Orders_' + tod() + '.csv';
+  a.click();
+}
+
+// ===== INIT =====
+window.onload = function() {
+  refreshLoginDrop();
+  var savedUser = sessionStorage.getItem('wdp_user');
+  var savedRole = sessionStorage.getItem('wdp_role');
+  if (savedUser && savedRole) {
+    curUser = savedUser; curRole = savedRole;
+    document.getElementById('loginWrap').style.display = 'none';
+    document.getElementById('appWrap').style.display = 'block';
+    document.getElementById('uBadge').textContent = savedUser + (savedRole==='founder'?' 👑':savedRole==='accountant'?' 📊':'');
+    document.getElementById('hSub').textContent = savedRole==='founder' ? 'Founder — Full access' : savedRole==='accountant' ? 'Accountant — View Only' : 'Sales Team';
+    var ab = document.getElementById('addLeadBtn');
+    if (ab) ab.style.display = '';
+    if (savedRole === 'founder') { document.getElementById('rTab').classList.remove('hide'); document.getElementById('tTab').classList.remove('hide'); }
+    if (savedRole === 'accountant') { document.getElementById('rTab').classList.remove('hide'); if (ab) ab.style.display = 'none'; }
+    populateAssign();
+    renderAll();
+  }
+};
+</script>
+</body>
+</html>
